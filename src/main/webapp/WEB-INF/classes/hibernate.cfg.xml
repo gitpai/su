@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- 设置数据库连接池的最大并发数 -->
+		<!-- Hibernate自带的连接池仅有测试价值,并不推荐在实际的项目中使用,下面已经被注释。实际项目中可以使用c3p0连接池 -->
+		<!-- <property name="connection.pool_size">500</property> -->
+		
+		<!-- c3p0连接池 -->
+		<property name="hibernate.connection.provider_class">
+			org.hibernate.connection.C3P0ConnectionProvider
+		</property>
+		<!-- c3p0连接池的最小连接数 -->
+		<property name="c3p0.min_size">5</property>
+		<!-- c3p0连接池的最大连接数 -->
+		<property name="c3p0.max_size">30</property>
+		<!-- c3p0连接池连接的超时时长，单位为秒，默认为0 -->
+		<property name="c3p0.time_out">1800</property>
+		<!-- c3p0缓存 Statement的数量数，默认为0，
+		JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。
+		但由于预缓存的statements属于单个 connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
+		如果maxStatements与 maxStatementsPerConnection均为0，则缓存被关闭
+		 -->
+		<property name="c3p0.max_statement">50</property>
+		<!--  --> 
+		<property name="c3p0.acquire_increment">1</property> <!-- default: 1 -->
+		<!-- 设定时间间隔去自动校验链接对象并销毁已经timeout的链接对象 ，单位为秒-->
+		<property name="c3p0.idle_test_period">120</property>  <!-- seconds --><!-- default: 0 -->
+		
+		<property name="c3p0.validate">true</property>
+		<property name="connection.autoReconnect">true</property>
+		<property name="connection.autoReconnectForPools">true</property>
+		<property name="connection.is-connection-validation-required">true</property>
+		
+		<!--连接MySQL的驱动类名-->  
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.is-connection-validation-required">true</property>
+		 <!--连接MySQL的IP地址及端口号-->  
+		 <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/su?useUnicode=true&amp;characterEncoding=UTF-8</property>
+		 <!--连接MySQL的用户名-->  
+		<property name="hibernate.connection.username">root</property>
+		 <!--连接MySQL的密码-->  
+		<property name="hibernate.connection.password">root</property><!-- mypwd -->
+		<!--显示SQL语句--> 
+		<property name="show_sql">true</property>
+		<!-- 格式化Hibernate的SQL输出语句 -->
+		<property name="format_sql">true</property>
+		 
+		 
+		<!-- 设置连接数据库使用的方言，Hibernate根据你选择的“方言”，针对每种数据库，作调整，如生成不同的SQL语句等 -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<!-- 修改以下配置信息以修改数据库默认数据库名设置 -->
+		<property name="hibernate.default_schema">su</property>
+		<!-- 自动创建|更新|验证数据库表结构。如果不是此方面的需求建议set value="none" -->
+		<!-- 常用属性有create、update
+			create：   每次加载hibernate时都会删除上一次的生成的表，然后根据你的model类再重新来生成新表，
+			哪怕两次没有任何改变也要这样执行，这就是导致数据库表数据丢失的一个重要原因。
+			create-drop： 每次加载hibernate时根据model类生成表，但是sessionFactory一关闭,表就自动删除。
+			update： 最常用的属性，第一次加载hibernate时根据model类会自动建立起表的结构（前提是先建立好数据库），
+			以后加载hibernate时根据model类自动更新表结构，即使表结构改变了但表中的行仍然存在不会删除以前的行。要注意的是当部署到服务器后，
+			表结构是不会被马上建立起来的，是要等应用第一次运行起来后才会。
+			validate ：   每次加载hibernate时，验证创建数据库表结构，只会和数据库中的表进行比较，不会创建新表，但是会插入新值。
+         -->
+		<property name="hbm2ddl.auto">update</property>
+		<property name="validationQuery">SELECT 1</property>
+		<property name="testOnBorrow">true</property>
+		
+		<mapping class="com.su.models.User" />
+		<mapping class="com.su.models.Umbrella" />
+	</session-factory>
+</hibernate-configuration>
