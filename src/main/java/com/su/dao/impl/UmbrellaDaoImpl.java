@@ -94,15 +94,15 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 	public Map<Integer, Boolean> getUmbrellaSta(String deviceId) {
 		// TODO Auto-generated method stub
 		Map<Integer, Boolean> umbrellaSta=new HashMap<Integer, Boolean>();
-		
 		Session session =MySessionFactory.getInstance().openSession();	
+		try{
+	
 		String hql="from Umbrella where uuid=:uuid";			
 		Query query  = session.createQuery(hql);
 		query.setString("uuid", deviceId);
 		@SuppressWarnings("unchecked")
 		List<Umbrella> umbrellas=query.list();
-		Umbrella um=umbrellas.get(0);
-	
+		Umbrella um=umbrellas.get(0);		
 		int key=1;
 		for (int i = 0; i < um.getUmbrellaSta().length; i++) {			
         byte date=	um.getUmbrellaSta()[i];       
@@ -128,6 +128,9 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 	        }       
 		}
 		return  umbrellaSta ;
+		}finally{
+			session.close();
+		}
 	}
 
 	@Override

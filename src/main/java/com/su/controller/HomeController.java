@@ -64,28 +64,8 @@ public class HomeController {
 		
 		UmbrellaDao dao=new  UmbrellaDaoImpl();	
         List<Umbrella> umbrellas=dao.findAllDevice();
-        model.addAttribute("umbrellas", umbrellas);
-      //  Umbrella um= umbrellas.get(0);
-       
-    /*    for (int i = 0; i < um.getUmbrellaSta().length; i++) {
-        byte date1=	um.getUmbrellaSta()[i];
-        String result ="";
-        byte a = date1; 
-        for (int j = 0; j < 8; j++)
-        {
-         byte c=a;
-         a=(byte)(a>>1);
-         a=(byte)(a<<1);
-         if(a==c){
-          result="0"+result;
-         }else{
-          result="1"+result;
-         }
-         a=(byte)(a>>1);
-        }
-        System.out.println(result);
-		}*/
-				
+        model.addAttribute("umbrellas", umbrellas);	
+        model.addAttribute("device",umbrellas.size());
 		return "device-list";
 	}
 	@RequestMapping(value = "/firstPage", method = RequestMethod.GET)
@@ -99,56 +79,12 @@ public class HomeController {
 		
 	
 	}
-	@RequestMapping(value = "/barUm", method ={ RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody NetResult  brrowUm(Locale locale, Model model,String devUuid,String umId,String operate ) {		
-		NetResult r=new NetResult();
-		System.out.println(devUuid);
-		System.out.println(umId);
-		System.out.println(operate);
-		System.out.println("接收到请求");	
-		UmbrellaDao dao=new	 UmbrellaDaoImpl();
-	    Umbrella um=dao.findDeviceByUuid(devUuid);
-	    byte[] umSta= um.getUmbrellaSta();
-	    
-		if(operate.equals("borrow")){ 
-			if(Integer.parseInt(umId)<9){
-				byte borro=0x00;
-				umSta[0]=BitUtils.setBitValue(umSta[0],Integer.parseInt(umId)-1,borro);
-			
-			}else{
-				byte borro=0x00;
-				umSta[1]=BitUtils.setBitValue(umSta[0],Integer.parseInt(umId)-9,borro);						}	
-				}
-		if(operate.equals("reback")){ 
-			System.out.println("raback");
-			if(Integer.parseInt(umId)<9){
-				byte borro=0x01;
-				umSta[0]=BitUtils.setBitValue(umSta[0],Integer.parseInt(umId)-1,borro);
-			
-			}else{
-				byte borro=0x01;
-				umSta[1]=BitUtils.setBitValue(umSta[0],Integer.parseInt(umId)-9,borro);						}	
-				}
-		um.setUmbrellaSta(umSta);
-		dao.addDevice(um);		
-		return r;
-		}
+
 	@RequestMapping(value = "/reback", method ={ RequestMethod.GET,RequestMethod.POST})
 	public void  rebackUm(Locale locale, Model model) {		
 		System.out.println("接收到请求");			
 	}
-	@RequestMapping(value = "/umbrella-list", method ={ RequestMethod.GET,RequestMethod.POST})
-	public String umbrellaList(Locale locale, Model model,String id,HttpServletRequest  request
-			) {
-		UmbrellaDaoImpl dao=new UmbrellaDaoImpl();
-		Map<Integer, Boolean> umbrellaSta=dao.getUmbrellaSta(id);
-
-		model.addAttribute("umbrellaSta", umbrellaSta);		
-		model.addAttribute("uuid", id);
-		model.addAttribute("umbrellaNum", umbrellaSta.size());		
-		return "umbrella-list";
 	
-	}
 	@RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
 	public String login(Locale locale, Model model,
 			@RequestParam(value="userName",required=true)  String userName,		
@@ -208,7 +144,7 @@ public class HomeController {
 		dao.addUser(user);*/
 		
 		
-	/*	UmbrellaDao dao=new  UmbrellaDaoImpl();
+		
 		int uuid=53013;
 		for(int i=0;i<14;i++){
 			Umbrella umbrella=new Umbrella();
@@ -217,14 +153,14 @@ public class HomeController {
 	        date[0]=(byte) 0xff;
 	        date[1]=0x03; 
 	        umbrella.setName("伞架");
-			umbrella.setDevice_uuid(""+uuid++);
+			umbrella.setDevice_uuid("81cee0dd9793330ac4cd1ddc133a0035");
 			umbrella.setDevice_lon(121.405603);
 			umbrella.setDevice_lat(31.322716);
 			umbrella.setStatus(true);
 			umbrella.setTime(new Date());
 			umbrella.setUmbrellaSta(date);	
 			dao.addDevice(umbrella);	
-		}*/
+		}
 		
    /*     List<Umbrella> umbrellas=dao.findAllDevice();
         Umbrella um= umbrellas.get(0);

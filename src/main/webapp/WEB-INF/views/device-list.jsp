@@ -61,7 +61,7 @@
 <body>
 
 
-	 <span class="r">共有伞架：<strong>2</strong> 套</span> </div>
+	 <span class="r">共有伞架：<strong>${device}</strong> 套</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>

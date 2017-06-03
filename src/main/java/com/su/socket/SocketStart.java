@@ -28,15 +28,35 @@ public class SocketStart  extends HttpServlet implements Runnable {
 
 
 
+	public static Map<String, Socket> getSocketClients() {
+		return socketClients;
+	}
+
+
+
+	public static void setSocketClients(Map<String, Socket> socketClients) {
+		SocketStart.socketClients = socketClients;
+	}
+
+
+
 	public static void setClients(HashMap<String,TcpServerFoward> clients) {
 		SocketStart.clients = clients;
 	}
 
-	public static void remClients(String key) {
+/*	public static void remClients(String key) {
 		
 		clients.remove(key);
 		System.out.println("然后现在还有");
 		for(Entry<String, TcpServerFoward> vo : clients.entrySet()){ 
+            System.out.println("key-------------"+vo.getKey());                                
+         }
+	}*/
+	public static void remClients(String key) {
+		
+		socketClients.remove(key);
+		System.out.println("然后现在还有");
+		for(Entry<String, Socket> vo : socketClients.entrySet()){ 
             System.out.println("key-------------"+vo.getKey());                                
          }
 	}
@@ -77,10 +97,10 @@ public class SocketStart  extends HttpServlet implements Runnable {
 				 
 				 System.out.println("获取客户端");
 				 
-				 TcpServerFoward tf= new TcpServerFoward(clientSocket,key+"");
+				 TcpServerFoward tf= new TcpServerFoward(clientSocket);
 				 //socketClients.put(key+"", clientSocket);
-				 clients.put(key+"",tf);
-				 key++;
+				 // clients.put(key+"",tf);
+				 //key++;
 				 tf.start();
 			
 			} catch (IOException e) {
