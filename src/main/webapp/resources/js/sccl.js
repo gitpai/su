@@ -414,7 +414,7 @@ $(function(){
 					{"id":"3","name":"设备管理","parentId":"1","url":"","icon":"&#xe604;","order":"1","isHeader":"0","childMenus":[
 						{"id":"4","name":"首页","parentId":"3","url":"firstPage","icon":"","order":"1","isHeader":"0","childMenus":""},
 						{"id":"5","name":"所有设备","parentId":"3","url":"device-list","icon":"","order":"1","isHeader":"0","childMenus":""},
-						{"id":"6","name":"设备授权","parentId":"3","url":"test2.html","icon":"","order":"1","isHeader":"0","childMenus":""}
+						{"id":"6","name":"添加设备","parentId":"3","url":"device-add","icon":"","order":"1","isHeader":"0","childMenus":""}
 					]},
 					{"id":"7","name":"用户管理","parentId":"1","url":"","icon":"&#xe602;","order":"1","isHeader":"0","childMenus":[
 						{"id":"8","name":"用户列表","parentId":"7","url":"admin-list","icon":"","order":"1","isHeader":"0","childMenus":""},

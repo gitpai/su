@@ -71,8 +71,13 @@ public class TcpServerFoward extends Thread {
                 String devUuid = null;
                 UmbrellaDao umbrellaDao =new UmbrellaDaoImpl();
                 Umbrella um=null;
-                while((recvMsgSize=in.read(receivBuf))!=-1){                 
-                		if(receivBuf[0]==0x01&&receivBuf[1]==0x01&&receivBuf[2]==0x23){
+                while((recvMsgSize=in.read(receivBuf))!=-1){   
+                	byte[] revData;
+                	revData=Arrays.copyOfRange(receivBuf, 0, 19);
+                	String recDataStr=byteToString(revData);
+                	System.out.println(recDataStr);
+                	
+                	if(receivBuf[0]==0x01&&receivBuf[1]==0x01&&receivBuf[2]==0x23){
                 			
                 			byte[] uuid;
                 			uuid=Arrays.copyOfRange(receivBuf, 3, 19);
@@ -80,8 +85,7 @@ public class TcpServerFoward extends Thread {
                 			byte[] umSta;
                 			umSta=Arrays.copyOfRange(receivBuf, 19, 21);                			
                 			um=umbrellaDao.findDeviceByUuid(devUuid);
-                			um.setUmbrellaSta(umSta);
-                			             			
+                			um.setUmbrellaSta(umSta);               			             			
                 			 Map<String, Socket> socketMap=SocketStart.getSocketClients();
                 			 synchronized(socketMap){
                 				 System.out.println(socketMap);

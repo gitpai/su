@@ -30,7 +30,7 @@
 <body>
 
 
-	<span class="r">共有雨伞：<strong>${umbrellaNum}</strong>套</span> </div>
+	<span class="r">共有雨伞：<strong>${umbrellaNum}</strong>套${admin}</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
@@ -107,12 +107,12 @@ jQuery(document).on('click', ".borrow", function() {
    
    	 jQuery.ajax({
    		 type: 'POST',
-   		 url: "barUm",
+   		 url: "barUmAdmin",
    		 data:data,
    		 dataType: 'json',
    		 success: function(json) { 
    	   		
-   			if(json.status==0){ 			
+   			if(json.status==1){ 			
    				cur.attr("umbrella-sta",false)			
    			 	layer.msg("借伞成功");	
    				var td = cur.parents("tr").find(".td-status");
@@ -143,11 +143,11 @@ jQuery(document).on('click', ".reback", function() {
    	 }
    	 jQuery.ajax({
    		 type: 'POST',
-   		 url: "barUm",
+   		 url: "barUmAdmin",
    		 data:data,
    		 dataType: 'json',
    		 success: function(json) { 
-   			if(json.status==0){
+   			if(json.status==1){
    				cur.attr("umbrella-sta",true)			
    			 	
    				var td = cur.parents("tr").find(".td-status");

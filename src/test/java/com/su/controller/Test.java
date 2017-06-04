@@ -4,15 +4,17 @@ import com.su.util.Md5_1;
 
 public class Test {
 	public static void main(String[] args) {
+	
+		byte a=(byte) Integer.parseInt("2");
 		/*byte a=(byte) 0x5f;
 		byte b = (byte) 0xff;*/
 		
 	/*	byte[]uuid={(byte) 0x91,(byte)0xce,(byte)0xe0,(byte)0xdd,(byte)0x97,(byte)0x93,0x31,0x0a,(byte)0xc4,(byte)0xcd,0x1d,(byte)0xdc,0x13,0x3a,0x00,0x35};
 		*/
-		byte[]  uuid=stringToByte("91cee0dd9793330ac4cd1ddc133a0035");
+	/*	byte[]  uuid=stringToByte("91cee0dd9793330ac4cd1ddc133a0035");
 		String a =byteToString(uuid);
 		System.out.println(a);
-		System.out.println("91cee0dd9793310ac4cd1ddc133a0035");
+		System.out.println("91cee0dd9793310ac4cd1ddc133a0035");*/
 	}
 	public  static byte[] stringToByte(String uuid){
 		

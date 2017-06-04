@@ -22,9 +22,18 @@ public class Umbrella {
 	@Column(name="device_name")
 	private String name;
 	
+	@Column(name="device_id")
+	private String deviceId;
+	
 	@Column(name="lon")
 	private Double device_lon;
 	
+	public String getDeviceId() {
+		return deviceId;
+	}
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
 	@Column(name="lat")
 	private Double device_lat;
 	

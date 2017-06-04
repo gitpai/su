@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/su/util/JdbcUtil.java=UTF-8
 encoding//src/main/webapp/WEB-INF/views=UTF-8
+encoding//src/main/webapp/WEB-INF/views/device-add.jsp=UTF-8
 encoding//src/test/java/com/su/controller/Test.java=UTF-8

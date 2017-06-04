@@ -8,8 +8,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.http.HttpResponse;
 import org.hibernate.annotations.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,45 +62,42 @@ public class HomeController {
 		model.addAttribute("user", users);	
 		return "admin-list";
 	}
-	@RequestMapping(value = "/device-list", method = RequestMethod.GET)
+	@RequestMapping(value = "/device-list", method ={ RequestMethod.GET,RequestMethod.POST})
 	
 	public String deviceList(Locale locale, Model model) {
+		
 		
 		UmbrellaDao dao=new  UmbrellaDaoImpl();	
         List<Umbrella> umbrellas=dao.findAllDevice();
         model.addAttribute("umbrellas", umbrellas);	
         model.addAttribute("device",umbrellas.size());
+       
 		return "device-list";
 	}
 	@RequestMapping(value = "/firstPage", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		return "firstPage";
 	}
-	@RequestMapping(value = "/getDeviceState", method ={ RequestMethod.GET,RequestMethod.POST})
-	public void  getDeviceState(Locale locale, Model model) {
-		
-		System.out.println("接收到请求");
-		
-	
-	}
 
-	@RequestMapping(value = "/reback", method ={ RequestMethod.GET,RequestMethod.POST})
-	public void  rebackUm(Locale locale, Model model) {		
-		System.out.println("接收到请求");			
-	}
+	
 	
 	@RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
 	public String login(Locale locale, Model model,
 			@RequestParam(value="userName",required=true)  String userName,		
-			@RequestParam(value="password",required=true)  String password) {
-		
+			@RequestParam(value="password",required=true)  String password,
+			HttpSession session,
+			HttpServletResponse response) {
+			Cookie c = new Cookie("JSESSIONID",session.getId());
+			c.setMaxAge(60*60);
+			response.addCookie(c);
 		System.out.println("进入了login");
 		UserDao dao=new UserDaoImpl();
 	
 		if(dao.findByName(userName)!=null){			
 			if(dao.findByName(userName).getPassword().equals(Md5_1.GetMD5Code(password))){		
 				model.addAttribute("status", true);
-				model.addAttribute("admin", userName);
+			//	model.addAttribute("admin", userName);
+				session.setAttribute("admin", userName);
 			}		
 										
 		}else{
@@ -134,18 +135,18 @@ public class HomeController {
 	public static void main(String[] args) {
 		UmbrellaDao dao=new  UmbrellaDaoImpl();
 		dao.getUmbrellaSta("53013");
-	/*	User user=new User();
-		user.setUserName("兀玉洁");
-		user.setPassword(Md5_1.GetMD5Code("yujie"));
+		User user=new User();
+		user.setUserName("wuyujie123");
+		user.setPassword(Md5_1.GetMD5Code("wuyujie123"));
 		user.setBorrowSta(false);
 		user.setTime(new Date());
 		user.setType(1000);
-		UserDao dao=new UserDaoImpl();
-		dao.addUser(user);*/
+		UserDao dao1=new UserDaoImpl();
+		dao1.addUser(user);
 		
 		
 		
-		int uuid=53013;
+	/*	int uuid=53013;
 		for(int i=0;i<14;i++){
 			Umbrella umbrella=new Umbrella();
 			      
@@ -160,7 +161,7 @@ public class HomeController {
 			umbrella.setTime(new Date());
 			umbrella.setUmbrellaSta(date);	
 			dao.addDevice(umbrella);	
-		}
+		}*/
 		
    /*     List<Umbrella> umbrellas=dao.findAllDevice();
         Umbrella um= umbrellas.get(0);

@@ -5,6 +5,7 @@ import java.util.Date;
 public class NetResult {
 	public int status;	
 	public String content;
+
 	public int getStatus() {
 		return status;
 	}
