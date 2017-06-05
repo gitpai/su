@@ -19,6 +19,10 @@ import com.su.dao.UmbrellaDao;
 import com.su.dao.impl.UmbrellaDaoImpl;
 import com.su.models.Umbrella;
 
+/**
+ * @author Yujie
+ *
+ */
 public class TcpServerFoward extends Thread {
 	private static int times= 0;
 	private static String key;

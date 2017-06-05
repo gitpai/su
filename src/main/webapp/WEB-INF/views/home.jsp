@@ -34,7 +34,7 @@
 					<ul class="header-dropdown-menu">
 						<li><a href="javascript:;">个人信息</a></li>
 						<li><a href="javascript:;">切换账户</a></li>
-						<li><a href="javascript:;">退出</a></li>
+						<li><a href="login-out">退出</a></li>
 					</ul>
 				</li>
 				<li class="header-bar-nav"> 

@@ -29,7 +29,8 @@
 </head>
 <body>
 
-
+  <c_rt:choose>
+  <c_rt:when test="${status}">
 	<span class="r">共有雨伞：<strong>${umbrellaNum}</strong>套${admin}</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
@@ -220,5 +221,14 @@ function admin_start(obj,id){
 	});
 }
 </script>
+		
+  </c_rt:when>
+  
+  <c_rt:otherwise>
+  		<% response.sendRedirect("login"); %>
+  		<%-- <jsp:forward page="home.jsp"></jsp:forward>  --%>
+  </c_rt:otherwise>
+ </c_rt:choose>
+	
 </body>
 </html>

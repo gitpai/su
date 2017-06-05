@@ -12,11 +12,15 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-
+/**
+ * @author Yujie
+ *
+ */
 
 /**
  * 创建一个多线程的Servlet
  */
+
 
 public class SocketStart  extends HttpServlet implements Runnable {
 	private static Map<String,TcpServerFoward>clients=new HashMap<String,TcpServerFoward>();

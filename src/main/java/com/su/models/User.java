@@ -9,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author Yujie
+ *
+ */
 @Entity
 @Table(name="user")
 public class User {
@@ -19,7 +23,8 @@ public class User {
 	
 	public User() {
 		super();
-		type=NORMAL;	
+		type=NORMAL;
+		userAuth=false;
 	}
 	
 	public static String get(int type) {
@@ -38,12 +43,22 @@ public class User {
 	private String userName;
 	@Column(name="user_type")
 	private int type;
+	public boolean isUserAuth() {
+		return userAuth;
+	}
+
+	public void setUserAuth(boolean userAuth) {
+		this.userAuth = userAuth;
+	}
+
 	@Column(name="reg_time")
 	private Date time; 
 	@Column(name="user_pwd")
 	private String password;
 	@Column(name="borrow_sta")
 	private boolean borrowSta;
+	@Column(name="user_auth")
+	private boolean userAuth;
 	public int getType() {
 		return type;
 	}

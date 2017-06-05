@@ -418,15 +418,16 @@ $(function(){
 					]},
 					{"id":"7","name":"用户管理","parentId":"1","url":"","icon":"&#xe602;","order":"1","isHeader":"0","childMenus":[
 						{"id":"8","name":"用户列表","parentId":"7","url":"admin-list","icon":"","order":"1","isHeader":"0","childMenus":""},
-						{"id":"9","name":"用户黑名单","parentId":"7","url":"home4.html","icon":"","order":"1","isHeader":"0","childMenus":""}
+						{"id":"9","name":"用户授权","parentId":"7","url":"user-auth","icon":"","order":"1","isHeader":"0","childMenus":""},
+						{"id":"10","name":"用户黑名单","parentId":"7","url":"home4.html","icon":"","order":"1","isHeader":"0","childMenus":""}
 					]}
 				]},
 				{"id":"2","name":"系统设置","parentId":"0","url":"","icon":"","order":"2","isHeader":"1","childMenus":[
-					{"id":"10","name":"API文档","parentId":"2","url":"","icon":"","order":"1","isHeader":"0","childMenus":[
-					{"id":"11","name":"SU开发协议","parentId":"2","url":"http://freeiot.top:8000/index.php?s=/1&page_id=8","icon":"","order":"1","isHeader":"0","childMenus":""}
+					{"id":"11","name":"API文档","parentId":"2","url":"","icon":"","order":"1","isHeader":"0","childMenus":[
+					{"id":"12","name":"SU开发协议","parentId":"2","url":"https://www.showdoc.cc/1630569?page_id=14990430","icon":"","order":"1","isHeader":"0","childMenus":""}
 					]},
-					{"id":"12","name":"关于我们","parentId":"2","url":"","icon":"","order":"1","isHeader":"0","childMenus":[
-						{"id":"13","name":"S&U","parentId":"12","url":"","icon":"","order":"1","isHeader":"0","childMenus":""},
+					{"id":"13","name":"关于我们","parentId":"2","url":"","icon":"","order":"1","isHeader":"0","childMenus":[
+						{"id":"14","name":"S&U","parentId":"12","url":"","icon":"","order":"1","isHeader":"0","childMenus":""},
 						
 					]}
 				]}

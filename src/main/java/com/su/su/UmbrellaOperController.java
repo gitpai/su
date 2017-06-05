@@ -1,4 +1,4 @@
-package com.su.controller;
+package com.su.su;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,14 +24,18 @@ import com.su.dao.UmbrellaDao;
 import com.su.dao.UserDao;
 import com.su.dao.impl.UmbrellaDaoImpl;
 import com.su.dao.impl.UserDaoImpl;
+import com.su.models.NetResult;
 import com.su.models.Umbrella;
 import com.su.models.User;
 import com.su.socket.SocketStart;
 import com.su.socket.TcpServerFoward;
 import com.su.util.BitUtils;
 import com.su.util.Md5_1;
-import com.su.util.NetResult;
 
+/**
+ * @author Yujie
+ *
+ */
 @Controller
 public class UmbrellaOperController {
 	
@@ -133,7 +137,7 @@ public class UmbrellaOperController {
 		byte[] umOperate=new byte[22];
 		umOperate [0]=0x01;
 		umOperate [1]=0x01;
-		umOperate [2]=0x03;
+		umOperate [2]=0x02;
 		for(int i=0;i<uuidByte.length;i++){
 			umOperate [i+3]=uuidByte[i];	
 		}
@@ -223,6 +227,7 @@ public class UmbrellaOperController {
 		return "umbrella-list";
 	
 	}
+	
 	@RequestMapping(value = "/delete-dev", method ={ RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody NetResult deleteDev(Locale locale, Model model,String uuid) {
 		NetResult r=new NetResult();		
@@ -246,8 +251,8 @@ public class UmbrellaOperController {
 				date[0] = (byte) 0xff;
 				date[1] = 0x03;
 				um.setUmbrellaSta(date);
-				um.setDevice_lat(X);
-				um.setDevice_lon(Y);
+				um.setDevice_lat(Y);
+				um.setDevice_lon(X);
 				dao.addDevice(um);
 			}			
 			model.addAttribute("addInfo", "添加伞架设备成功");

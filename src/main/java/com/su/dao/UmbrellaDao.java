@@ -5,7 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.su.models.Umbrella;
+import com.su.models.UmbrellaNear;
 
+/**
+ * @author Yujie
+ *
+ */
 public interface UmbrellaDao {
 	public List<Umbrella> findAllDevice();//找出所有设备(已实现)
 	public List<Umbrella> findAllAvlDevice();//找出所有可用设备
@@ -16,6 +21,6 @@ public interface UmbrellaDao {
 	public boolean getDeviceStatus(String uuid);                //获取指定伞架的状态信息  在线或离线
 	public Map<Integer,Boolean> getUmbrellaSta(String deviceId);//获取指定伞架各个伞的状态信息
 	public void openUmbrellaById(Socket socket,byte [] operate);//借还指定伞(已实现)
-	public List<Umbrella> findNearDevice(double lon,double lat);
+	public List<UmbrellaNear> findNearDevice(double lon,double lat);
 	
 }

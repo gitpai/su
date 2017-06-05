@@ -27,7 +27,9 @@
 </head>
 
 <body data-type="login" class="theme-white">
-<script src="resources/assets/js/theme.js"></script>
+	 <c_rt:choose>
+  <c_rt:when test="${status}">
+  <script src="resources/assets/js/theme.js"></script>
 <div >
     <!-- 风格切换 -->
   
@@ -99,34 +101,30 @@
 <script src="resources/assets/js/app.js"></script>
 <script>
 
-$(function () {
-	　　$('form').bind('submit',function () {  //给form标签绑定submit事件
-	　　　　var i=0;
-	　　　　/* $("input").each(function(){  //遍历input标签，判断是否有内容未填写
-	　　　　　　var vl=$(this).val();
-	　　　　　　if(vl==""){
-	　　　　　　　　i=1;
-	　　　　　　}
-	　　　　}); */
-	　　　　var t=$('#name').val();  //判断textarea标签是否填写
-	　　　　if (t=='') {
-	　　　　　　alert('请填写伞架名称');
-　　　　		return false;
-	　　　　}
-		  var t=$('#ip').val();  //判断textarea标签是否填写
-		　　　　if (t=='') {
-		　　　　　　alert('请填写设备编号');
-				return false;
-		　　　　}
-		  var t=$('#X').val();  //判断textarea标签是否填写
-		　　　　if (t=='') {
-		　　　　　　alert('请选择伞架放置地点信息');
-				return false;
-		　　　　}
-	　　　
-	　　});
-
-	});
+		$(function () {
+			　	　$('form').bind('submit',function () {  //给form标签绑定submit事件
+			　　　	　var i=0;
+			　
+			　　　　var t=$('#name').val();  //判断textarea标签是否填写
+			　　　　if (t=='') {
+			　　　　　　alert('请填写伞架名称');
+		　　　　		return false;
+			　　　　}
+				  var t=$('#devId').val();  //判断textarea标签是否填写
+				　　　　if (t=='') {
+				　　　　　　alert('请填写设备编号');
+						return false;
+				　　　　}
+				
+				  var t=$('#X').val();  //判断textarea标签是否填写
+				　　　　if (t=='') {
+				　　　　　　alert('请选择伞架放置地点信息');
+						return false;
+				　　　　}
+			　　　
+			　　});
+		
+			});
 
 
     function selectPointInMap() {
@@ -311,6 +309,15 @@ $(function () {
     ///////////////////////////////////////////////////////////////
 
 </script>
+		
+  </c_rt:when>
+  
+  <c_rt:otherwise>
+  		<% response.sendRedirect("login"); %>
+  		<%-- <jsp:forward page="home.jsp"></jsp:forward>  --%>
+  </c_rt:otherwise>
+  </c_rt:choose>
+
 
 </body>
 

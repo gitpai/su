@@ -18,13 +18,15 @@
   <body>
   <c_rt:choose>
   <c_rt:when test="${status}">
-		<jsp:forward page="home.jsp"></jsp:forward> 
-	</c_rt:when>
-  
-<c_rt:otherwise>
   <div align="center"><font  color="green" > <h1>共享雨伞</h1></font></div>
   
 	<img  src="resources/image/home.jpg" width="100%" height="99%">	
+		
+  </c_rt:when>
+  
+  <c_rt:otherwise>
+  		<% response.sendRedirect("login"); %>
+  		<%-- <jsp:forward page="home.jsp"></jsp:forward>  --%>
   </c_rt:otherwise>
   </c_rt:choose>
   </body>

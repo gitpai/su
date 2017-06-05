@@ -15,11 +15,16 @@ import org.hibernate.Transaction;
 
 import com.su.dao.UmbrellaDao;
 import com.su.models.Umbrella;
+import com.su.models.UmbrellaNear;
 import com.su.util.LocationUtil;
 import com.su.util.MySessionFactory;
 
 
 
+/**
+ * @author Yujie
+ *
+ */
 public class UmbrellaDaoImpl implements UmbrellaDao {
 
 	@Override
@@ -204,10 +209,10 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 	}
 
 	@Override
-	public List<Umbrella> findNearDevice(double lon, double lat) {
+	public List<UmbrellaNear> findNearDevice(double lon, double lat) {
 		// TODO Auto-generated method stub
 		List<Umbrella> allUmbrella = findAllDevice();
-		List<Umbrella> allNearUmbrella = new ArrayList<>();
+		List<UmbrellaNear> allNearUmbrella = new ArrayList<>();
 		for (int i = 0; i < allUmbrella.size(); i++) {
 			Umbrella um = allUmbrella.get(i);
 			/*System.out.println(um.isStatus()+"=====status");
@@ -215,8 +220,11 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 			System.out.println(lat+" "+lon+" "+um.getDevice_lat()+" "+um.getDevice_lon());
 			if (um.isStatus()) {
 				if (LocationUtil.getDistance(lat, lon,um.getDevice_lat(), um.getDevice_lon() ) < 2000) {
-					
-					allNearUmbrella.add(um);
+					UmbrellaNear umNear=new UmbrellaNear();
+					umNear.setDeviceId(um.getDevice_uuid());
+					umNear.setDevice_lon(um.getDevice_lon());
+					umNear.setDevice_lat(um.getDevice_lat());
+					allNearUmbrella.add(umNear);
 					System.out.println("添加了一个");
 				}
 

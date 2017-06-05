@@ -27,42 +27,49 @@
 <title>管理员列表</title>
 </head>
 <body>
-
-
-	 <span class="r">共有伞架：<strong>2</strong> 套</span> </div>
+ <c_rt:choose>
+  <c_rt:when test="${status}">
+  <span class="r">共有伞架：<strong>2</strong> 套</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
 				<th scope="col" colspan="9">用户列表</th>
 			</tr>
 			<tr class="text-c">
-				<th width="25"><input type="checkbox" name="" value=""></th>
+				
 				<th width="40">用户ID</th>
 				<th width="150">用户名</th>
 				<th width="90">角色</th>			
 				<th width="130">加入时间</th>
 				<th width="100">是否借伞</th>
-				<th width="100">操作</th>
+				<th width="100">是否授权</th>
+				
 			</tr>
 		</thead>
 		<tbody>
 		
 		<c_rt:forEach items= "${user}" var="user">
 		<tr class="text-c">
-				<td><input type="checkbox" value="1" name=""></td>
+				
 				<td>${user.id}</td>
 				<td>${user.userName}</td>
+				
 				<c_rt:choose>
-					<c_rt:when test="${user.type}==1000"><td>超级管理员</td></c_rt:when>
-					<c_rt:otherwise><td>超级管理员</td></c_rt:otherwise>
+					<c_rt:when test="${user.type eq '1000'}"><td>超级管理员</td></c_rt:when>
+					<c_rt:otherwise><td>普通用户</td></c_rt:otherwise>
 				</c_rt:choose>			
 				<td>${user.time}</td>
 				<c_rt:choose>
 					<c_rt:when test="${user.borrowSta}"><td class="td-status"><span class="label label-success radius">已借伞</span></td></c_rt:when>
 					<c_rt:otherwise><td class="td-status"><span class="label radius">未借伞</span></td></c_rt:otherwise>
 				</c_rt:choose>	
+			
 				
-				<td class="td-manage"><a style="text-decoration:none" onClick="admin_stop(this,'10001')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> <a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','admin-add.html','1','800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				<c_rt:choose>
+					<c_rt:when test="${user.userAuth}"><td class="td-status"><span class="label label-success radius">已授权</span></td></c_rt:when>
+					<c_rt:otherwise><td class="td-status"><span class="label radius">未授权</span></td></c_rt:otherwise>
+				</c_rt:choose>	
+				
 			</tr>	
 		</c_rt:forEach>
 		</tbody>
@@ -138,5 +145,15 @@ function admin_start(obj,id){
 	});
 }
 </script>
+		
+  </c_rt:when>
+  
+  <c_rt:otherwise>
+  		<% response.sendRedirect("login"); %>
+  		<%-- <jsp:forward page="home.jsp"></jsp:forward>  --%>
+  </c_rt:otherwise>
+  </c_rt:choose>
+
+	 
 </body>
 </html>

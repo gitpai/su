@@ -17,6 +17,10 @@ import com.su.util.MySessionFactory;
 
 
 
+/**
+ * @author Yujie
+ *
+ */
 public class UserDaoImpl implements UserDao {
 
 	@Override
@@ -93,6 +97,19 @@ public class UserDaoImpl implements UserDao {
 			session.close();	
 		}
 		
+	}
+	@Override
+	public List<User> findUserUnAuth() {
+		Session session= MySessionFactory.getInstance().openSession();
+		try{
+		String hql="from User where user_auth=false";
+		Query query=session.createQuery(hql);
+		List <User> users=query.list();	
+		// TODO Auto-generated method stub
+		return users;
+		}finally{
+			session.close();	
+		}
 	}
 
 	

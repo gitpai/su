@@ -21,7 +21,8 @@
   <body class="login-bg">
   <c_rt:choose>
   <c_rt:when test="${status}">
-		<jsp:forward page="home.jsp"></jsp:forward> 
+  		<% response.sendRedirect("home"); %>
+	<%-- 	<jsp:forward page="home.jsp"></jsp:forward>  --%>
 	</c_rt:when>
   
 <c_rt:otherwise>
