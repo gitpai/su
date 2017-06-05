@@ -116,8 +116,7 @@ public class TcpServerFoward extends Thread {
                 in.close();    
                 
                 System.out.println("我这个客户端掉线了");
-                um.setStatus(false);
-              
+                um.setStatus(false);             
                 SocketStart.remClients(devUuid);   
                 umbrellaDao.addDevice(um);  
                 return;
