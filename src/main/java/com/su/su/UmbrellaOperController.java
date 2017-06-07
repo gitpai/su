@@ -227,6 +227,7 @@ public class UmbrellaOperController {
 		return "umbrella-list";
 	
 	}
+
 	
 	@RequestMapping(value = "/delete-dev", method ={ RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody NetResult deleteDev(Locale locale, Model model,String uuid) {

@@ -92,12 +92,14 @@
 					<c_rt:otherwise><td class="td-status"><span class="label radius">离线</span><a href="javascript:void(0)" class="updateState" data-uuid="">&nbsp;&nbsp;刷新</a></td></c_rt:otherwise>
 				</c_rt:choose>	
 				<td></a> 
+				
 				<a  href="javascript:;" onclick="umbrella_list('雨伞状态','umbrella-list','1','800','520','${umbrella.device_uuid}')"  style="text-decoration:none">				
 				点击查看详情</a></td>			
 				<td class="td-manage">
 				<a style="text-decoration:none" onClick="admin_stop(this,'10001')" href="javascript:;" title="停用">
 				<i class="Hui-iconfont">&#xe631;</i>
 				</a> 
+				
 				<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','admin-add.html','1','800','500')" class="ml-5  style="text-decoration:none">
 				<i class="Hui-iconfont">&#xe6df;</i>
 				</a>

@@ -89,7 +89,7 @@ function addIframe(cur){
 		if(h=="device-list"&&isCur==true){
 			$(".tab-nav-content").empty();
 			var tab = "<a href='javascript:;' class='content-tab-list ' id='list' data-id='device-list'>列表模式 </a>";
-			var tab1 = "<a href='javascript:;' class='content-tab-map '  id='map' data-id='device-list'>地图模式 </a>";
+			var tab1 = "<a href='javascript:;' class='content-tab-map '  id='map' data-id='device-map'>地图模式 </a>";
 			$(".tab-nav-content").append(tab);
 			$(".tab-nav-content").append(tab1);
 	
@@ -114,7 +114,7 @@ $(".layout-main-tab").on('click', 'a', function(e) {
 	}
 	if($(this).attr("id")=="map"){
 		$(".layout-main-body").empty();
-		var iframe = "<iframe class='body-iframe' name='iframe' width='100%' height='99%' src='device-add' frameborder='0' data-id='device-add' seamless></iframe>";	
+		var iframe = "<iframe class='body-iframe' name='iframe' width='100%' height='99%' src='device-map' frameborder='0' data-id='device-map' seamless></iframe>";	
 		$(".layout-main-body").append(iframe);
 	}
 });

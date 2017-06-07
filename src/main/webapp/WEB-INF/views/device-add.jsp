@@ -32,7 +32,7 @@
   <script src="resources/assets/js/theme.js"></script>
 <div >
     <!-- 风格切换 -->
-  
+  <a  href='javascript:;' onclick='umbrella_list('雨伞状态','umbrella-list','1','800','520',53021)'  style='text-decoration:none'>	点击查看详情</a>
     <div class="tpl-login">
         <div class="tpl-login-content" >
             <div class="tpl-login-title">添加伞架</div>

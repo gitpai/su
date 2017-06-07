@@ -72,6 +72,15 @@ public class HomeController {
        
 		return "device-list";
 	}
+	@RequestMapping(value = "/device-map", method = { RequestMethod.GET, RequestMethod.POST })
+	public String umbrellaMap(Locale locale, Model model) {
+		UmbrellaDao dao=new  UmbrellaDaoImpl();	
+        List<Umbrella> umbrellas=dao.findAllDevice();
+        model.addAttribute("umbrellas", umbrellas);	
+        model.addAttribute("device",umbrellas.size());
+		return "device-map";
+	
+	}
 	@RequestMapping(value = "/firstPage", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		return "firstPage";
