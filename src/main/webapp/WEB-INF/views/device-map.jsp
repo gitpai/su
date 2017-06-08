@@ -1,3 +1,4 @@
+<%@page import="com.su.models.Umbrella"%>
 
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -100,7 +101,7 @@
 		 
 		map_init();
 		<c_rt:forEach items="${umbrellas}" var="umbrella">
-	
+		
 		setLocation(${umbrella.device_lon},${umbrella.device_lat},"${umbrella.device_uuid}",${umbrella.id});
 		</c_rt:forEach>	
 
@@ -114,23 +115,25 @@
 		
 	function setLocation(x,y,desc,id){//参数：经纬度
          var point = new BMap.Point(x, y);   
-        
+        	//alert(desc);      
          //map.centerAndZoom(point, 19); 
          var marker=new BMap.Marker(point);
          marker.setLabel(new BMap.Label("伞架:"+(id),{offset:new BMap.Size(20,-10)}));	 
          map.addOverlay(marker);   
 		 //若要给标注添加信息框，则继续下面的代码：
 		//var infoWindow = new BMap.InfoWindow("普通标注");
-		var hh = "<a  href='javascript:;' onclick='umbrella_list1(/'desc+/')'  style='text-decoration:none'>	点击查看详情</a>";			
-		
+		//onclick='umbrella_list1("+desc+")' data-uuid="+desc+"  onclick=\"proEdit('".XXXXX."')\"onclick=&quot;umbrella_list1(&quot;"+desc+"&quot;)&quot
+	//	var hh = "<a  href=umbrella-list?id="+desc+" class=&quot;watchClass&quot; data-uuid="+desc+" style=&quot;text-decoration:none&quot;>	点击查看详情</a>";					
+		var hh = "<a  href=javascript:; class=&quot;watchClass&quot; onclick=umbrella_list1("+"'"+desc+"'"+")  style=text-decoration:none>	点击查看详情</a>";	
 		
 		var infoWindow = new BMap.InfoWindow(hh);
+		
 		//给mark添加鼠标单击事件
 		marker.addEventListener("click", function(){this.openInfoWindow(infoWindow);});		
       // marker.addEventListener("click", function () { alert('该处经纬度坐标是：'+x+','+y+'。aa');});	
 		//marker.addEventListener("click", function(){window.external.PutIntotextBox(x,y)});			
     }
-    
+	
 	//清除覆盖物
     function removeOverlay() {
 		map.clearOverlays();

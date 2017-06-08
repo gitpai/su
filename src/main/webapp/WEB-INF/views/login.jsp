@@ -35,7 +35,7 @@
             <h1>框架后台管理系统</h1>
         </header>
         <div class="login-main">
-			<form action="/controller/login" class="layui-form" method="post">
+			<form action="/su/login" class="layui-form" method="post">
 				<input name="__RequestVerificationToken" type="hidden" value="">                
 				<div class="layui-form-item">
 					<label class="login-icon">

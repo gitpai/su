@@ -220,6 +220,7 @@ public class UmbrellaOperController {
 	@RequestMapping(value = "/umbrella-list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String umbrellaList(Locale locale, Model model, String id, HttpServletRequest request) {
 		UmbrellaDaoImpl dao = new UmbrellaDaoImpl();
+		System.out.println(id);
 		Map<Integer, Boolean> umbrellaSta = dao.getUmbrellaSta(id);
 		model.addAttribute("umbrellaSta", umbrellaSta);
 		model.addAttribute("uuid", id);
@@ -278,5 +279,22 @@ public class UmbrellaOperController {
 		}finally{
 			
 		}
+	}
+	public static void main(String[] args) {
+		UmbrellaDao dao = new UmbrellaDaoImpl();
+		
+		
+			Umbrella um = new Umbrella();
+			um.setName("…°º‹≤‚ ‘2");
+			um.setStatus(false);
+			um.setTime(new Date());
+			um.setDevice_uuid("32311");
+			byte[] date = new byte[2];
+			date[0] = (byte) 0xff;
+			date[1] = 0x03;
+			um.setUmbrellaSta(date);
+			um.setDevice_lat(31.320);
+			um.setDevice_lon(121.40669);
+			dao.addDevice(um);
 	}
 }
