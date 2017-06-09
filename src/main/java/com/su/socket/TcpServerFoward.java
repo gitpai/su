@@ -32,7 +32,7 @@ public class TcpServerFoward extends Thread {
 	private static OutputStream out;
 	private static final int SERVER_PORT=8989;//¶Ë¿ÚºÅ
 	private static final int BUFFER_SIZE = 512;	
-	
+	private boolean[] flags = new boolean[12];
 	
 	public TcpServerFoward(Socket socket) {
 		
@@ -90,8 +90,8 @@ public class TcpServerFoward extends Thread {
                 			umSta=Arrays.copyOfRange(receivBuf, 19, 21);                			
                 			um=umbrellaDao.findDeviceByUuid(devUuid);
                 			um.setUmbrellaSta(umSta);               			             			
-                			 Map<String, Socket> socketMap=SocketStart.getSocketClients();
-                			 synchronized(socketMap){
+                			Map<String, Socket> socketMap=SocketStart.getSocketClients();
+                			synchronized(socketMap){
                 				 System.out.println(socketMap);
                 				 System.out.println(socketMap.hashCode());
                 			 if(!socketMap.containsKey(devUuid)){
@@ -104,7 +104,14 @@ public class TcpServerFoward extends Thread {
                 				umbrellaDao.addDevice(um);  
                 			 }
                 		}
+                	
+                	
+                		
                 	}
+                
+                
+                
+                
                 	//String received=new String(receivBuf,0,recvMsgSize);
                 /*	clients=SocketStart.getClients();              	
                 	for(Entry<String, TcpServerFoward> vo : clients.entrySet()){ 

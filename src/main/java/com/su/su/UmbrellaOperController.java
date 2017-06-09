@@ -225,8 +225,7 @@ public class UmbrellaOperController {
 		model.addAttribute("umbrellaSta", umbrellaSta);
 		model.addAttribute("uuid", id);
 		model.addAttribute("umbrellaNum", umbrellaSta.size());
-		return "umbrella-list";
-	
+		return "umbrella-list";	
 	}
 
 	
