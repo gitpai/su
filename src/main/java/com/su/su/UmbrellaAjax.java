@@ -43,6 +43,7 @@ public class UmbrellaAjax {
 		List<UmbrellaNear> nearDevice =dao.findNearDevice(lon, lat);	 
 		return nearDevice;			
 	}
+	
 	@RequestMapping(value = "/barUmAdmin-mobile", method = { RequestMethod.GET, RequestMethod.POST })
 	public @ResponseBody NetResult adminBarOper(Locale locale, Model model, String devUuid, String umId, String operate,
 			HttpSession session
@@ -65,9 +66,72 @@ public class UmbrellaAjax {
 			umOperate [21]=0x00;			
 		}else if(operate.equals("reback")){
 			umOperate [21]=0x01;
-		}		
+		}	
+		UmbrellaDao dao = new UmbrellaDaoImpl();
+		Umbrella umBefore = dao.findDeviceByUuid(devUuid);
+		byte[] staBefore=umBefore.getUmbrellaSta();
 		send(socket, umOperate);
-		byte[] operateResult = new byte[50];
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//
+		
+		Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
+		byte[] staAfter=umAfter.getUmbrellaSta();
+		if(operate.equals("borrow")){			
+			if(Integer.parseInt(umId)<9){
+				if(BitUtils.getBitValue(staBefore[0], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[0], Integer.parseInt(umId))){
+					r.setStatus(0);
+					r.setContent("借伞成功");	
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(false);
+					userDao.addUser(user);
+				}
+				}else if(8<Integer.parseInt(umId)&&Integer.parseInt(umId)<12){
+					if(BitUtils.getBitValue(staBefore[1], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[1], Integer.parseInt(umId))){			
+					r.setStatus(0);
+					r.setContent("借伞成功");	
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(false);
+					userDao.addUser(user);
+					}
+					
+				}	
+			
+					
+				}
+			else if(operate.equals("reback")){
+				if(BitUtils.getBitValue(staBefore[0], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[0], Integer.parseInt(umId))){
+					r.setStatus(0);
+					r.setContent("还伞成功");	
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(true);
+					userDao.addUser(user);
+					}else if(8<Integer.parseInt(umId)&&Integer.parseInt(umId)<12){
+					if(BitUtils.getBitValue(staBefore[1], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[1], Integer.parseInt(umId))){			
+					r.setStatus(0);
+					r.setContent("还伞成功");		
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(true);
+					userDao.addUser(user);
+					}
+					
+				}	
+		
+		}
+			
+		return r;
+		}	
+		
+		
+		/*byte[] operateResult = new byte[50];
 		try {
 			InputStream socketInput = socket.getInputStream();
 			System.out.println("while前");
@@ -131,13 +195,10 @@ public class UmbrellaAjax {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
-		System.out.println("退出循环");
-		System.out.println("sockets==========" + sockets);
-		System.out.println("socket============" + socket);
-		return r;
-	}	
+	
+	
 	public static void send(Socket socket,byte [] operate){
 		PrintWriter	pOut=null;
 		OutputStream outPutStream=null;
