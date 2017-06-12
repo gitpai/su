@@ -81,7 +81,7 @@ public class TcpServerFoward extends Thread {
                 	String recDataStr=byteToString(revData);
                 	System.out.println(recDataStr);
                 	
-                	if(receivBuf[0]==0x01&&receivBuf[1]==0x01&&receivBuf[2]==0x23){
+                	if(receivBuf[0]==0x01&&receivBuf[1]==0x01&&receivBuf[2]==0x01){
                 			
                 			byte[] uuid;
                 			uuid=Arrays.copyOfRange(receivBuf, 3, 19);

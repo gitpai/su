@@ -54,7 +54,7 @@
 				<td>${userUnAuth.userName}</td>
 				<c_rt:choose>
 					<c_rt:when test="${userUnAuth.type}==1000"><td>超级管理员</td></c_rt:when>
-					<c_rt:otherwise><td>超级管理员</td></c_rt:otherwise>
+					<c_rt:otherwise><td>普通用户</td></c_rt:otherwise>
 				</c_rt:choose>			
 				<td>${userUnAuth.time}</td>
 				<c_rt:choose>

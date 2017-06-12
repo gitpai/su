@@ -36,6 +36,15 @@ import com.su.util.BitUtils;
  */
 @Controller
 public class UmbrellaAjax {
+	/**
+	 * 
+	 * 获取最近的伞架信息
+	 * @param locale
+	 * @param model
+	 * @param lon
+	 * @param lat
+	 * @return
+	 */
 	@RequestMapping(value ="/getNearUmbrella", method ={ RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody List getNearUmbrella(Locale locale, Model model,double lon,double lat) {
 		NetResult r=new NetResult();		
@@ -43,12 +52,36 @@ public class UmbrellaAjax {
 		List<UmbrellaNear> nearDevice =dao.findNearDevice(lon, lat);	 
 		return nearDevice;			
 	}
-	
+	/**
+	 * 根据指定Uuid获取伞架开关伞信息 
+	 * @param locale
+	 * @param model
+	 * @param lon
+	 * @param lat
+	 * @return
+	 */
+	@RequestMapping(value ="/getUmbrellaSta", method ={ RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody Map<Integer, Boolean> getUmbrellaSta(Locale locale, Model model,String uuid) {			
+		UmbrellaDao dao=new  UmbrellaDaoImpl();	
+		Map<Integer, Boolean> umbrellaSta=dao.getUmbrellaSta(uuid);		
+		return umbrellaSta;			
+	}
+	/**
+	 * 
+	 * 借还伞
+	 * @param locale
+	 * @param model
+	 * @param devUuid
+	 * @param umId
+	 * @param operate
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "/barUmAdmin-mobile", method = { RequestMethod.GET, RequestMethod.POST })
 	public @ResponseBody NetResult adminBarOper(Locale locale, Model model, String devUuid, String umId, String operate,
 			HttpSession session
-	) {
-		
+	){
+		System.out.println("devUuid"+devUuid+"umId"+umId+"operate"+operate);
 		NetResult r = new NetResult();		
 		Map<String, Socket> sockets = SocketStart.getSocketClients();// 获取当前Socket列表
 		Socket socket = sockets.get(devUuid);
@@ -70,65 +103,114 @@ public class UmbrellaAjax {
 		UmbrellaDao dao = new UmbrellaDaoImpl();
 		Umbrella umBefore = dao.findDeviceByUuid(devUuid);
 		byte[] staBefore=umBefore.getUmbrellaSta();
-		send(socket, umOperate);
+		try{
+			send(socket, umOperate);
+		}catch(Exception e){
+			r.setStatus(0);
+			r.setContent("该伞架未在线");
+			System.out.println("伞架未在线");
+			return r;
+		}
+		
+		
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//
-		
+	
 		Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
 		byte[] staAfter=umAfter.getUmbrellaSta();
-		if(operate.equals("borrow")){			
-			if(Integer.parseInt(umId)<9){
-				if(BitUtils.getBitValue(staBefore[0], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[0], Integer.parseInt(umId))){
-					r.setStatus(0);
-					r.setContent("借伞成功");	
-					UserDao userDao = new UserDaoImpl();
-					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
-					user.setBorrowSta(false);
-					userDao.addUser(user);
-				}
-				}else if(8<Integer.parseInt(umId)&&Integer.parseInt(umId)<12){
-					if(BitUtils.getBitValue(staBefore[1], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[1], Integer.parseInt(umId))){			
-					r.setStatus(0);
-					r.setContent("借伞成功");	
-					UserDao userDao = new UserDaoImpl();
-					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
-					user.setBorrowSta(false);
-					userDao.addUser(user);
-					}
-					
-				}	
-			
-					
-				}
-			else if(operate.equals("reback")){
-				if(BitUtils.getBitValue(staBefore[0], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[0], Integer.parseInt(umId))){
-					r.setStatus(0);
-					r.setContent("还伞成功");	
-					UserDao userDao = new UserDaoImpl();
-					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
-					user.setBorrowSta(true);
-					userDao.addUser(user);
-					}else if(8<Integer.parseInt(umId)&&Integer.parseInt(umId)<12){
-					if(BitUtils.getBitValue(staBefore[1], Integer.parseInt(umId))!=BitUtils.getBitValue(staAfter[1], Integer.parseInt(umId))){			
-					r.setStatus(0);
-					r.setContent("还伞成功");		
-					UserDao userDao = new UserDaoImpl();
-					User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户
-					user.setBorrowSta(true);
-					userDao.addUser(user);
-					}
-					
-				}	
-		
+		int umIndex = 0;
+		int umIdDeal=Integer.parseInt(umId);
+		if(Integer.parseInt(umId) < 9){
+			umIdDeal-=1;
+			umIndex=0;
 		}
+	
+		else if(8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12){
+			umIdDeal-=9;
+			umIndex=1;
+		}			
+		System.out.println("umIndex"+umIndex);
+		UserDao userDao = new UserDaoImpl();
+		User user = userDao.findByName((String) session.getAttribute("admin")); // 寻找当前开伞用户	
+		//	User user = userDao.findByName(admin); // 寻找当前开伞用户
+		if (operate.equals("borrow")){
+		
+			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
+				r.setStatus(1);
+				r.setContent("借伞成功");				
+				user.setBorrowSta(false);				
+			}else{
+				r.setStatus(0);
+				r.setContent("借伞失败");											
+			}
 			
+		}else if(operate.equals("reback")){
+			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
+				r.setStatus(1);
+				r.setContent("还伞成功");				
+				user.setBorrowSta(true);				
+			}else{
+				r.setStatus(0);
+				r.setContent("还伞失败");	
+			}
+			
+		}			
+		userDao.addUser(user);
 		return r;
-		}	
+	}	
+		/*if (operate.equals("borrow")) {
+			if (Integer.parseInt(umId) < 9) {
+				if (BitUtils.getBitValue(staBefore[0], Integer.parseInt(umId)) != BitUtils.getBitValue(staAfter[0],Integer.parseInt(umId))) {
+					r.setStatus(0);
+					r.setContent("借伞成功");
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String) session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(false);
+					userDao.addUser(user);
+				}
+			} else if (8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12) {
+				if (BitUtils.getBitValue(staBefore[1], Integer.parseInt(umId)) != BitUtils.getBitValue(staAfter[1],
+						Integer.parseInt(umId))) {
+					r.setStatus(0);
+					r.setContent("借伞成功");
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String) session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(false);
+					userDao.addUser(user);
+				}
+
+			}
+
+		} else if (operate.equals("reback")) {
+			if (BitUtils.getBitValue(staBefore[0], Integer.parseInt(umId)) != BitUtils.getBitValue(staAfter[0],
+					Integer.parseInt(umId))) {
+				r.setStatus(0);
+				r.setContent("还伞成功");
+				UserDao userDao = new UserDaoImpl();
+				User user = userDao.findByName((String) session.getAttribute("admin")); // 寻找当前开伞用户
+				user.setBorrowSta(true);
+				userDao.addUser(user);
+			} else if (8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12) {
+				if (BitUtils.getBitValue(staBefore[1], Integer.parseInt(umId)) != BitUtils.getBitValue(staAfter[1],
+						Integer.parseInt(umId))) {
+					r.setStatus(0);
+					r.setContent("还伞成功");
+					UserDao userDao = new UserDaoImpl();
+					User user = userDao.findByName((String) session.getAttribute("admin")); // 寻找当前开伞用户
+					user.setBorrowSta(true);
+					userDao.addUser(user);
+				}
+
+			}
+
+		}*/
+			
+		
 		
 		
 		/*byte[] operateResult = new byte[50];

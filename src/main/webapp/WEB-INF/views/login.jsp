@@ -9,8 +9,8 @@
 	<meta name="renderer" content="webkit|ie-comp|ie-stand">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta http-equiv="Cache-Control" content="no-siteapp" />
-	<meta name="keywords" content="scclui框架">
-	<meta name="description" content="scclui为轻量级的网站后台管理系统模版。">
+	<meta name="keywords" content="智慧雨伞">
+	<meta name="description" content="智慧雨伞。">
     <title>首页</title>
 	
 	<link rel="stylesheet" href="resources/layui/css/layui.css">
@@ -32,7 +32,7 @@
   
     <div class="login-box">
         <header>
-            <h1>框架后台管理系统</h1>
+            <h1>智慧雨伞后台管理系统</h1>
         </header>
         <div class="login-main">
 			<form action="/controller/login" class="layui-form" method="post">
@@ -65,7 +65,7 @@
 			</form>        
 		</div>
         <footer>
-            <p>xuan © www.mycodes.net</p>
+            <p> © SHU</p>
         </footer>
     </div>
     <script type="text/html" id="code-temp">

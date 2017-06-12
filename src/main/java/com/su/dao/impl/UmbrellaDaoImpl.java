@@ -126,7 +126,7 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 	        	 umbrellaSta.put(key, true);//1代表伞还在
 	        
 	         }
-	         if(key==10){
+	         if(key==12){
 	        	 return  umbrellaSta ; 
 	         }
 	         a=(byte)(a>>1);

@@ -105,8 +105,7 @@ public class UserController {
 			Cookie c = new Cookie("JSESSIONID",session.getId());
 			c.setMaxAge(60*60);
 			response.addCookie(c);		
-			session.setAttribute("status", false);
-				
+			session.setAttribute("status", false);				
 	   return "login";	
 	}
 	

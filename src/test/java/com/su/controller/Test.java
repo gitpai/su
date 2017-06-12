@@ -1,11 +1,17 @@
 package com.su.controller;
 
+import com.su.util.BitUtils;
 import com.su.util.Md5_1;
 
 public class Test {
 	public static void main(String[] args) {
 	
-		byte a=(byte) Integer.parseInt("2");
+		//byte a=(byte) Integer.parseInt("2");
+		byte a=(byte) 0xfe;
+		
+		for(int i=0;i<8;i++){
+			System.out.println(i+"对应位高低"+BitUtils.getBitValue(a, i));	
+		}
 		/*byte a=(byte) 0x5f;
 		byte b = (byte) 0xff;*/
 		

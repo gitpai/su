@@ -1,5 +1,6 @@
 package com.su.su;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,7 +39,8 @@ public class UserAjax {
 			User user=new User();
 			user.setUserName(userName);
 			user.setPassword(Md5_1.GetMD5Code(password));
-			user.setBorrowSta(true);
+			user.setBorrowSta(false);
+			user.setTime(new Date());
 			dao.addUser(user);
 			r.setStatus(1);
 			r.setContent("×¢²á³É¹¦");

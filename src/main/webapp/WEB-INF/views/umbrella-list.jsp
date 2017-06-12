@@ -31,7 +31,7 @@
 
   <c_rt:choose>
   <c_rt:when test="${status}">
-	<span class="r">共有雨伞：<strong>${umbrellaNum}</strong>套${admin}</span> </div>
+	<span class="r">共有雨伞：<strong>${umbrellaNum}</strong>套</span> </div>
 	<table class="table table-border table-bordered table-bg">
 		<thead>
 			<tr>
@@ -108,7 +108,7 @@ jQuery(document).on('click', ".borrow", function() {
    
    	 jQuery.ajax({
    		 type: 'POST',
-   		 url: "barUmAdmin",
+   		 url: "barUmAdmin-mobile",
    		 data:data,
    		 dataType: 'json',
    		 success: function(json) { 
@@ -144,7 +144,7 @@ jQuery(document).on('click', ".reback", function() {
    	 }
    	 jQuery.ajax({
    		 type: 'POST',
-   		 url: "barUmAdmin",
+   		 url: "barUmAdmin-mobile",
    		 data:data,
    		 dataType: 'json',
    		 success: function(json) { 
