@@ -21,12 +21,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.su.dao.UmbrellaDao;
+import com.su.dao.UserBarHisDao;
 import com.su.dao.UserDao;
 import com.su.dao.impl.UmbrellaDaoImpl;
+import com.su.dao.impl.UserBarHisDaoImpl;
 import com.su.dao.impl.UserDaoImpl;
 import com.su.models.NetResult;
 import com.su.models.Umbrella;
 import com.su.models.User;
+import com.su.models.UserBarHistory;
 import com.su.socket.SocketStart;
 import com.su.socket.TcpServerFoward;
 import com.su.util.BitUtils;
@@ -220,7 +223,7 @@ public class UmbrellaOperController {
 	public @ResponseBody NetResult adminBarOper(Locale locale, Model model, String devUuid, String umId, String operate,String admin,
 			HttpSession session
 	) {
-		System.out.println("devUuid"+devUuid+"umId"+umId+"operate"+operate);
+	//	System.out.println("devUuid"+devUuid+"umId"+umId+"operate"+operate);
 		NetResult r = new NetResult();		
 		Map<String, Socket> sockets = SocketStart.getSocketClients();// 获取当前Socket列表
 		Socket socket = sockets.get(devUuid);
@@ -247,11 +250,9 @@ public class UmbrellaOperController {
 		}catch(Exception e){
 			r.setStatus(0);
 			r.setContent("该伞架未在线");
-			System.out.println("伞架未在线");
+		//	System.out.println("伞架未在线");
 			return r;
-		}
-		
-		
+		}				
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
@@ -275,14 +276,35 @@ public class UmbrellaOperController {
 		}			
 		System.out.println("umIndex"+umIndex);
 		UserDao userDao = new UserDaoImpl();
-		//User user = userDao.findByName((String) session.getAttribute("admin")); // 寻找当前开伞用户	
+	
+		//User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户	
+		//User user = userDao.findByName("wuyujie123"); // 寻找当前开伞用户	
 		User user = userDao.findByName(admin); // 寻找当前开伞用户
+		//System.out.println("用户授权:"+user.isUserAuth());
+		
+		if(!user.isUserAuth()){
+			r.setStatus(0);
+			r.setContent("该用户未授权");	
+			return r;
+		}
+		if(user.isBorrowSta()){
+			UserBarHisDao ubhd =new UserBarHisDaoImpl();
+			UserBarHistory us=	ubhd.findLatestHis(admin);			
+			r.setStatus(0);
+			r.setContent("该用户在"+us.getBorrowTime()+"时间已借伞尚未归还");	
+			return r;
+		}
 		if (operate.equals("borrow")){
 		
 			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
+				UserBarHisDao ubhd =new UserBarHisDaoImpl();	//创建借伞历史信息方法			
+				UserBarHistory us=	new UserBarHistory();   //创建历史信息对象
+				us.setBorrowTime(new Date());               //添加借伞时间
+				us.setUserName(admin);
+				ubhd.addBarHis(us);						
 				r.setStatus(1);
 				r.setContent("借伞成功");				
-				user.setBorrowSta(false);				
+				user.setBorrowSta(true);				
 			}else{
 				r.setStatus(0);
 				r.setContent("借伞失败");											
@@ -290,9 +312,13 @@ public class UmbrellaOperController {
 			
 		}else if(operate.equals("reback")){
 			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
+				UserBarHisDao ubhd =new UserBarHisDaoImpl();
+				UserBarHistory us=	ubhd.findLatestHis(admin);
+				us.setRebackTime(new Date());	
+				ubhd.addBarHis(us);	
 				r.setStatus(1);
 				r.setContent("还伞成功");				
-				user.setBorrowSta(true);				
+				user.setBorrowSta(false);				
 			}else{
 				r.setStatus(0);
 				r.setContent("还伞失败");	
@@ -350,11 +376,9 @@ public class UmbrellaOperController {
 	}
 	public static void send(Socket socket,byte [] operate) throws Exception{
 		PrintWriter	pOut=null;
-		OutputStream outPutStream=null;
-		
-	
-			outPutStream=socket.getOutputStream();	
-			outPutStream.write(operate);
+		OutputStream outPutStream=null;			
+		outPutStream=socket.getOutputStream();	
+		outPutStream.write(operate);
 			//outPutStream.close();
 			//out.close();
 			//clientSocket.close();

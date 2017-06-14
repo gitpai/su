@@ -3,6 +3,7 @@ package com.su.dao.impl;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,6 +17,7 @@ import org.hibernate.Transaction;
 import com.su.dao.UmbrellaDao;
 import com.su.models.Umbrella;
 import com.su.models.UmbrellaNear;
+import com.su.util.GPSUtil;
 import com.su.util.LocationUtil;
 import com.su.util.MySessionFactory;
 
@@ -210,6 +212,7 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 
 	@Override
 	public List<UmbrellaNear> findNearDevice(double lon, double lat) {
+		double[] gps1=GPSUtil.gcj02_To_Bd09(lat, lon);
 		// TODO Auto-generated method stub
 		List<Umbrella> allUmbrella = findAllDevice();
 		List<UmbrellaNear> allNearUmbrella = new ArrayList<>();
@@ -217,13 +220,15 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 			Umbrella um = allUmbrella.get(i);
 			/*System.out.println(um.isStatus()+"=====status");
 			System.out.println(LocationUtil.getDistance(lat, lon, um.getDevice_lat(), um.getDevice_lon()));*/
-			System.out.println(lat+" "+lon+" "+um.getDevice_lat()+" "+um.getDevice_lon());
+			//System.out.println(lat+" "+lon+" "+um.getDevice_lat()+" "+um.getDevice_lon());
 			if (um.isStatus()) {
-				if (LocationUtil.getDistance(lat, lon,um.getDevice_lat(), um.getDevice_lon() ) < 2000) {
+				if (LocationUtil.getDistance(gps1[0], gps1[1],um.getDevice_lat(), um.getDevice_lon() ) < 2000) {
 					UmbrellaNear umNear=new UmbrellaNear();
 					umNear.setDeviceId(um.getDevice_uuid());
-					umNear.setDevice_lon(um.getDevice_lon());
-					umNear.setDevice_lat(um.getDevice_lat());
+					double [] gps=	GPSUtil.bd09_To_Gcj02(um.getDevice_lat(), um.getDevice_lon());
+					DecimalFormat df = new DecimalFormat( "0.000000 ");   					
+					umNear.setDevice_lon(Double.parseDouble(df.format(gps[0])) );
+					umNear.setDevice_lat(Double.parseDouble(df.format(gps[1])));
 					allNearUmbrella.add(umNear);
 					System.out.println("添加了一个");
 				}

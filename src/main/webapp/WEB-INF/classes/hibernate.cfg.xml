@@ -69,5 +69,7 @@
 		
 		<mapping class="com.su.models.User" />
 		<mapping class="com.su.models.Umbrella" />
+		<mapping class="com.su.models.UserBarHistory"/>
+		<mapping class="com.su.models.Moments"/>
 	</session-factory>
 </hibernate-configuration>

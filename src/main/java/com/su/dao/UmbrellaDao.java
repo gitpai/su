@@ -23,4 +23,5 @@ public interface UmbrellaDao {
 	public void openUmbrellaById(Socket socket,byte [] operate);//借还指定伞(已实现)
 	public List<UmbrellaNear> findNearDevice(double lon,double lat);
 	
+	
 }
