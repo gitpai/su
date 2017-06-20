@@ -15,15 +15,19 @@ public class Moments {
 	//private String moment_id;//Íâ¼ü
 	@Column(name="user_name")
 	private String userName;
-	@Id
+
 	@Column(name="user_moment")
 	private String userMoment;
+	
 	@Column(name="user_sex")
 	private boolean userSex;//true man false woman
 	@Column(name="user_local")
 	private String userLocal;
+	
+	@Id
 	@Column(name="moment_Time")
 	private Date momentTime; 
+	
 	public Date getMomentTime() {
 		return momentTime;
 	}

@@ -27,13 +27,11 @@
 		<!--  --> 
 		<property name="c3p0.acquire_increment">1</property> <!-- default: 1 -->
 		<!-- 设定时间间隔去自动校验链接对象并销毁已经timeout的链接对象 ，单位为秒-->
-		<property name="c3p0.idle_test_period">120</property>  <!-- seconds --><!-- default: 0 -->
-		
+		<property name="c3p0.idle_test_period">120</property>  <!-- seconds --><!-- default: 0 -->		
 		<property name="c3p0.validate">true</property>
 		<property name="connection.autoReconnect">true</property>
 		<property name="connection.autoReconnectForPools">true</property>
-		<property name="connection.is-connection-validation-required">true</property>
-		
+		<property name="connection.is-connection-validation-required">true</property>		
 		<!--连接MySQL的驱动类名-->  
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="connection.is-connection-validation-required">true</property>
@@ -42,7 +40,7 @@
 		 <!--连接MySQL的用户名-->  
 		<property name="hibernate.connection.username">root</property>
 		 <!--连接MySQL的密码-->  
-		<property name="hibernate.connection.password">root</property><!-- mypwd -->
+		<property name="hibernate.connection.password">ROOT</property><!-- mypwd -->
 		<!--显示SQL语句--> 
 		<property name="show_sql">true</property>
 		<!-- 格式化Hibernate的SQL输出语句 -->
@@ -71,5 +69,6 @@
 		<mapping class="com.su.models.Umbrella" />
 		<mapping class="com.su.models.UserBarHistory"/>
 		<mapping class="com.su.models.Moments"/>
+		<mapping class="com.su.models.UserVerifyCode"/>
 	</session-factory>
 </hibernate-configuration>

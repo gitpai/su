@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 
 import com.su.dao.UserDao;
 import com.su.models.User;
+import com.su.models.UserVerifyCode;
 import com.su.util.JdbcUtil;
 import com.su.util.Md5_1;
 import com.su.util.MySessionFactory;
@@ -110,6 +111,34 @@ public class UserDaoImpl implements UserDao {
 		}finally{
 			session.close();	
 		}
+	}
+	@Override
+	public void addUserRegCode(UserVerifyCode userVerifyCode) {
+		// TODO Auto-generated method stub
+		Session session=MySessionFactory.getInstance().openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.saveOrUpdate(userVerifyCode);
+			tx.commit();
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			
+			session.close();
+					}	
+	}
+	@Override
+	public String getUserRegCode(String phoneNum) {
+		// TODO Auto-generated method stub
+		Session session=MySessionFactory.getInstance().openSession();
+		String hql="from UserVerifyCode where user_name=:phoneNum";
+	
+		 Query query=  session.createQuery(hql);
+		 query.setString("phoneNum", phoneNum);
+		List<UserVerifyCode> users=  query.list();
+		UserVerifyCode userVerifyCode=	users.get(0);		
+		return userVerifyCode.getVerfyCode();
 	}
 
 	

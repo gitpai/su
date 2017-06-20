@@ -86,7 +86,7 @@ public class UmbrellaAjax {
 		Map<String, Socket> sockets = SocketStart.getSocketClients();// 获取当前Socket列表
 		Socket socket = sockets.get(devUuid);
 		byte[] uuidByte=TcpServerFoward.stringToByte(devUuid);
-		byte[] umOperate=new byte[22];
+		byte[] umOperate=new byte[22];	//下发协议
 		umOperate [0]=0x01;
 		umOperate [1]=0x01;
 		umOperate [2]=0x03;
@@ -100,9 +100,12 @@ public class UmbrellaAjax {
 		}else if(operate.equals("reback")){
 			umOperate [21]=0x01;
 		}	
+		
 		UmbrellaDao dao = new UmbrellaDaoImpl();
 		Umbrella umBefore = dao.findDeviceByUuid(devUuid);
 		byte[] staBefore=umBefore.getUmbrellaSta();
+		
+		
 		try{
 			send(socket, umOperate);
 		}catch(Exception e){
@@ -114,7 +117,12 @@ public class UmbrellaAjax {
 		
 		
 		try {
-			Thread.sleep(2000);
+			if(operate.equals("borrow")){			
+				Thread.sleep(5000);		
+			}else if(operate.equals("reback")){
+				Thread.sleep(10000);
+			}
+		
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -228,6 +228,23 @@ public class UmbrellaOperController {
 		Map<String, Socket> sockets = SocketStart.getSocketClients();// 获取当前Socket列表
 		Socket socket = sockets.get(devUuid);
 		byte[] uuidByte=TcpServerFoward.stringToByte(devUuid);
+		
+		UserDao userDao = new UserDaoImpl();	
+		User user = userDao.findByName(admin); // 寻找当前开伞用户	
+		if(!user.isUserAuth()){ //用户权限校验
+			r.setStatus(0);
+			r.setContent("该用户未授权");	
+			return r;
+		}
+		if (operate.equals("borrow")) {
+			if (user.isBorrowSta()) {
+				UserBarHisDao ubhd = new UserBarHisDaoImpl();
+				UserBarHistory us = ubhd.findLatestHis(admin);
+				r.setStatus(0);
+				r.setContent("该用户在" + us.getBorrowTime() + "时间已借伞尚未归还");
+				return r;
+			}
+		}
 		byte[] umOperate=new byte[22];
 		umOperate [0]=0x01;
 		umOperate [1]=0x01;
@@ -254,7 +271,12 @@ public class UmbrellaOperController {
 			return r;
 		}				
 		try {
-			Thread.sleep(5000);
+			if(operate.equals("borrow")){			
+				Thread.sleep(5000);		
+			}else if(operate.equals("reback")){
+				Thread.sleep(10000);
+			}	
+		
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -275,27 +297,16 @@ public class UmbrellaOperController {
 			umIndex=1;
 		}			
 		System.out.println("umIndex"+umIndex);
-		UserDao userDao = new UserDaoImpl();
-	
-		//User user = userDao.findByName((String)session.getAttribute("admin")); // 寻找当前开伞用户	
-		//User user = userDao.findByName("wuyujie123"); // 寻找当前开伞用户	
-		User user = userDao.findByName(admin); // 寻找当前开伞用户
-		//System.out.println("用户授权:"+user.isUserAuth());
 		
-		if(!user.isUserAuth()){
-			r.setStatus(0);
-			r.setContent("该用户未授权");	
-			return r;
-		}
-		if(user.isBorrowSta()){
-			UserBarHisDao ubhd =new UserBarHisDaoImpl();
-			UserBarHistory us=	ubhd.findLatestHis(admin);			
-			r.setStatus(0);
-			r.setContent("该用户在"+us.getBorrowTime()+"时间已借伞尚未归还");	
-			return r;
-		}
+		
 		if (operate.equals("borrow")){
-		
+		/*	if(user.isBorrowSta()){
+				UserBarHisDao ubhd =new UserBarHisDaoImpl();
+				UserBarHistory us=	ubhd.findLatestHis(admin);			
+				r.setStatus(0);
+				r.setContent("该用户在"+us.getBorrowTime()+"时间已借伞尚未归还");	
+				return r;
+			}*/
 			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
 				UserBarHisDao ubhd =new UserBarHisDaoImpl();	//创建借伞历史信息方法			
 				UserBarHistory us=	new UserBarHistory();   //创建历史信息对象
