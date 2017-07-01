@@ -20,6 +20,7 @@ import com.su.dao.UserDao;
 import com.su.dao.impl.UserDaoImpl;
 import com.su.models.NetResult;
 import com.su.models.User;
+import com.su.models.UserLoginSta;
 import com.su.models.UserVerifyCode;
 import com.su.util.Md5_1;
 import com.su.util.SmsServer;
@@ -32,10 +33,12 @@ import com.su.util.SmsServer;
 public class UserAjax {
 
 	@RequestMapping(value = "/register-mobile", method = {RequestMethod.POST, RequestMethod.GET})
-	public @ResponseBody NetResult register(Locale locale, Model model,			
+	public  @ResponseBody NetResult register(Locale locale, Model model,			
 			@RequestParam(value="userName",required=true)  String userName,		
 			@RequestParam(value="password",required=true)  String password,
-			@RequestParam(value="smsCode",required=true)  String smsCode
+			@RequestParam(value="userSex",required=true)   boolean userSex,
+			@RequestParam(value="nickName",required=true)  String nickName,
+			@RequestParam(value="smsCode",required=true)   String smsCode
 			) {
 		NetResult r=new NetResult();
 		UserDaoImpl dao=new UserDaoImpl();	   
@@ -47,6 +50,9 @@ public class UserAjax {
 				user.setPassword(Md5_1.GetMD5Code(password));
 				user.setBorrowSta(false);
 				user.setTime(new Date());
+				user.setUserAuth(true);
+				user.setUserSex(userSex);
+				user.setNickName(nickName);
 				dao.addUser(user);
 				r.setStatus(1);
 				r.setContent("注册成功");	
@@ -92,8 +98,7 @@ public class UserAjax {
 	@RequestMapping(value = "/login-mobile", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody NetResult login(Locale locale, Model model,
 			@RequestParam(value="userName",required=true)  String userName,		
-			@RequestParam(value="password",required=true)  String password,
-			
+			@RequestParam(value="password",required=true)  String password,			
 			HttpSession session,
 			HttpServletResponse response) {
 			
@@ -103,11 +108,20 @@ public class UserAjax {
 			if(dao.findByName(userName).getPassword().equals(Md5_1.GetMD5Code(password))){		
 				r.setStatus(1);
 				r.setContent("登录成功");
-			}		
-										
+			}												
 		}else{
 			r.setContent("账户或密码错误");
 		}		
 	   return r;	
+	}
+	
+	@RequestMapping(value = "/user-sta", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody UserLoginSta  getUserSta(Locale locale, Model model,
+			@RequestParam(value="userName",required=true)  String userName,							
+			HttpSession session,
+			HttpServletResponse response) {
+			UserDao userDao=new UserDaoImpl();
+		    UserLoginSta userLoginSta=	userDao.getUserLoginSta(userName);						  
+		    return userLoginSta ;
 	}
 }

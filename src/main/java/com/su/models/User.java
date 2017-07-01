@@ -16,6 +16,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name="user")
 public class User {
+	public boolean isUserSex() {
+		return userSex;
+	}
+
+	public void setUserSex(boolean userSex) {
+		this.userSex = userSex;
+	}
+
 	public static int ADMIN =1000;
 	public static int NORMAL=100;
 	public static String ADMIN_STR="π‹¿Ì‘±";
@@ -50,11 +58,28 @@ public class User {
 	public void setUserAuth(boolean userAuth) {
 		this.userAuth = userAuth;
 	}
-
+	@Column(name="user_sex")
+	private  boolean userSex;
+	
+	@Column(name="nick_name")
+	private String nickName;
+	
 	@Column(name="reg_time")
 	private Date time; 
+	
+	
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	@Column(name="user_pwd")
 	private String password;
+	
 	@Column(name="borrow_sta")
 	private boolean borrowSta;
 	@Column(name="user_auth")

@@ -55,6 +55,7 @@ public class HomeController {
 		logger.info("Welcome ,you need to sign", locale);		
 		return "login";
 	}
+
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home1(Locale locale, Model model) {
 		return "home";

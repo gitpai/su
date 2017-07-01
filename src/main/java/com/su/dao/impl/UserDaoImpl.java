@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 
 import com.su.dao.UserDao;
 import com.su.models.User;
+import com.su.models.UserLoginSta;
 import com.su.models.UserVerifyCode;
 import com.su.util.JdbcUtil;
 import com.su.util.Md5_1;
@@ -131,14 +132,28 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public String getUserRegCode(String phoneNum) {
 		// TODO Auto-generated method stub
-		Session session=MySessionFactory.getInstance().openSession();
-		String hql="from UserVerifyCode where user_name=:phoneNum";
-	
+		 Session session=MySessionFactory.getInstance().openSession();
+		 String hql="from UserVerifyCode where user_name=:phoneNum";	
 		 Query query=  session.createQuery(hql);
 		 query.setString("phoneNum", phoneNum);
-		List<UserVerifyCode> users=  query.list();
-		UserVerifyCode userVerifyCode=	users.get(0);		
-		return userVerifyCode.getVerfyCode();
+		 List<UserVerifyCode> users=  query.list();
+		 UserVerifyCode userVerifyCode=	users.get(0);		
+		 return userVerifyCode.getVerfyCode();
+	}
+	
+	@Override
+	public UserLoginSta getUserLoginSta(String userName) {
+		// TODO Auto-generated method stub
+			Session session =MySessionFactory.getInstance().openSession();
+			String hql="from User where user_name=:userName";
+			Query query=	session.createQuery(hql);
+			query.setString("userName", userName);
+		    List<User> users=	query.list();
+		    UserLoginSta userLoginSta=new UserLoginSta();
+		    userLoginSta.setBorrowSta(users.get(0).isBorrowSta());
+		    userLoginSta.setNickName(users.get(0).getNickName());
+		    userLoginSta.setUserSex(users.get(0).isUserSex());		
+			return userLoginSta;
 	}
 
 	

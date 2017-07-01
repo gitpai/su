@@ -35,7 +35,7 @@
             <h1>智慧雨伞后台管理系统</h1>
         </header>
         <div class="login-main">
-			<form action="/su/login" class="layui-form" method="post">
+			<form action="/controller/login" class="layui-form" method="post">
 				<input name="__RequestVerificationToken" type="hidden" value="">                
 				<div class="layui-form-item">
 					<label class="login-icon">
