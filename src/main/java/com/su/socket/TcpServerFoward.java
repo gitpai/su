@@ -60,26 +60,26 @@ public class TcpServerFoward extends Thread {
 	}*/
 	@Override
 	public void run() {
-		System.out.println("times:"+times++);
-		byte[] receivBuf=new byte[BUFFER_SIZE];  
+		System.out.println("times:" + times++);
+		byte[] receivBuf = new byte[BUFFER_SIZE];
 		int recvMsgSize;
-		
-		boolean state=true;
-        try {  
-            while(true){  
-        
-                SocketAddress clientAddress = socket.getRemoteSocketAddress();  
-                System.out.println("Handling client at "+ clientAddress);                
-                InputStream in =socket.getInputStream(); 
-                OutputStream out= socket.getOutputStream();     
-                String devUuid = null;
-                UmbrellaDao umbrellaDao =new UmbrellaDaoImpl();
-                Umbrella um=null;
-                while((recvMsgSize=in.read(receivBuf))!=-1){   
-                	byte[] revData;
-                	revData=Arrays.copyOfRange(receivBuf, 0, 19);
-                	String recDataStr=byteToString(revData);
-                	System.out.println(recDataStr);
+
+		boolean state = true;
+		try {
+			while (true) {
+
+				SocketAddress clientAddress = socket.getRemoteSocketAddress();
+				System.out.println("Handling client at " + clientAddress);
+				InputStream in = socket.getInputStream();
+				OutputStream out = socket.getOutputStream();
+				String devUuid = null;
+				UmbrellaDao umbrellaDao = new UmbrellaDaoImpl();
+				Umbrella um = null;
+				while ((recvMsgSize = in.read(receivBuf)) != -1) {
+					byte[] revData;
+					revData = Arrays.copyOfRange(receivBuf, 0, 19);
+					String recDataStr = byteToString(revData);
+					System.out.println(recDataStr);
 
 					if (receivBuf[0] == 0x01 && receivBuf[1] == 0x01 && receivBuf[2] == 0x01) {
 						byte[] uuid;
@@ -93,22 +93,24 @@ public class TcpServerFoward extends Thread {
 						synchronized (socketMap) {
 							System.out.println(socketMap);
 							System.out.println(socketMap.hashCode());
-							
+
 							if (!socketMap.containsKey(devUuid)) {
 								socketMap.put(devUuid, socket);
 								um.setStatus(true);
-								System.out.println("集合未包含当前Socket");
-							} else {
-								socketMap.remove(devUuid);
-								socketMap.put(devUuid, socket);
-								System.out.println("集合已包含当前Socket");
-							}
+								System.out.println("添加新的Socket");
+							}else 
+							{
+								if (!socketMap.get(devUuid).equals(socket)) {
+									System.out.println("与上次Socket不同");
+									socketMap.remove(devUuid);
+									socketMap.put(devUuid, socket);
+								} 
+							}	
 							umbrellaDao.addDevice(um);
 						}
 					}
 
 				}
-                
                 
                 
                 

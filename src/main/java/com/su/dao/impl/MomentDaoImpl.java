@@ -62,12 +62,18 @@ public class MomentDaoImpl implements MomentDao{
 	public List<Comment> findComments(String uuid) {
 		// TODO Auto-generated method stub
 		Session session=MySessionFactory.getInstance().openSession();
-		String hql="from Comment where uuid=:uuid order by comment_time desc";
+		try{	
+		String hql="from Comment where uuid=:uuid order by comment_time desc";	
 		Query query=session.createQuery(hql);
-		query.setString("uuid", uuid);
+		query.setString("uuid", uuid);		
 		@SuppressWarnings("unchecked")
-		List<Comment> comments=query.list();		
+		List<Comment> comments=query.list();
+		
 		return comments;
+		}
+		finally{
+			session.close();
+		}
 	}
 
 	@Override
@@ -83,11 +89,9 @@ public class MomentDaoImpl implements MomentDao{
 		} catch (RuntimeException e) {
 			tx.rollback();
 			throw e;
-		} finally {
-			
+		} finally {			
 			session.close();
-					}	
-		
+		}	
 	}
 
 	

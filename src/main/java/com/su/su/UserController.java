@@ -85,10 +85,11 @@ public class UserController {
 		System.out.println("进入了login");
 		UserDao dao=new UserDaoImpl();
 	
-		if(dao.findByName(userName)!=null){			
+		if(dao.findByName(userName)!=null){	
 			if(dao.findByName(userName).getPassword().equals(Md5_1.GetMD5Code(password))){		
+				System.out.println("查询到当前用户");
 				model.addAttribute("status", true);
-			//	model.addAttribute("admin", userName);
+			 //	model.addAttribute("admin", userName);
 				session.setAttribute("admin", userName);
 				session.setAttribute("status", true);
 			}		

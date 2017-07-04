@@ -60,6 +60,8 @@ public class HomeController {
 	public String home1(Locale locale, Model model) {
 		return "home";
 	}
+	
+	
 
 	@RequestMapping(value = "/device-list", method ={ RequestMethod.GET,RequestMethod.POST})
 	

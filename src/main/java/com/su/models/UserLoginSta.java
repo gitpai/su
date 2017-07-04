@@ -5,6 +5,16 @@ public class UserLoginSta {
 	private String nickName;
 	private boolean userSex;
 	private boolean borrowSta;
+	public int status;	
+	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	
 	public String getNickName() {
 		return nickName;
 	}

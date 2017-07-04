@@ -232,10 +232,9 @@ public class UmbrellaDaoImpl implements UmbrellaDao {
 					allNearUmbrella.add(umNear);
 					System.out.println("添加了一个");
 				}
-
-				// System.out.println(list.get(i));
+			   	// System.out.println(list.get(i));
 			}
-
+            
 		}
 		return allNearUmbrella;
 	}

@@ -16,15 +16,19 @@ import com.su.dao.impl.MomentDaoImpl;
 import com.su.models.Comment;
 import com.su.models.Moments;
 import com.su.models.NetResult;
+import com.su.util.Md5_1;
 
 @Controller
 public class MomentsController {
 	@RequestMapping(value = "/getLatestMoments", method = { RequestMethod.GET, RequestMethod.POST })
 	public @ResponseBody  List getLatestMoments(Locale locale, Model model) {
 		MomentDao mDao=new MomentDaoImpl();
+		
 		List<Moments> moments=	mDao.findLatestMoment();
+		
 		List<Moments> momentWithComent=new ArrayList<Moments>();
-		for(int i=0;i<moments.size();i++){
+		
+		for(int i=0;i<moments.size();i++){		
 		moments.get(i).setComment(mDao.findComments(moments.get(i).getUuid()));
 		momentWithComent.add(moments.get(i));
 		}	
@@ -56,9 +60,11 @@ public class MomentsController {
 			moment.setMomentTime(new Date());
 			moment.setUserLocal(userLocal);
 			moment.setUserMoment(comment);
+			moment.setUuid(Md5_1.GetMD5Code(userName+new Date()) );
 			MomentDao mDao=new MomentDaoImpl();
 			mDao.addMoment(moment);
 		} catch (Exception e) {
+			e.printStackTrace();
 			r.setStatus(0);
 			r.setContent("Ìí¼Óæ°É¡×´Ì¬Ê§°Ü");
 			return  r;
