@@ -120,6 +120,9 @@ public class UmbrellaOperController {
 
 		return r;
 	}
+	
+	
+	
 	/*
 	 * 后台超管借还伞接口
 	 */
@@ -272,9 +275,9 @@ public class UmbrellaOperController {
 		}				
 		try {
 			if(operate.equals("borrow")){			
-				Thread.sleep(5000);		
+				Thread.sleep(20000);		
 			}else if(operate.equals("reback")){
-				Thread.sleep(10000);
+				Thread.sleep(20000);
 			}	
 		
 		} catch (InterruptedException e) {
@@ -339,7 +342,91 @@ public class UmbrellaOperController {
 		userDao.addUser(user);
 		return r;
 	}
+	/**
+	 * 买伞
+	 * @param locale
+	 * @param model
+	 * @param devUuid
+	 * @param umId
+	 * @param operate
+	 * @param admin
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/buyUmbrella", method = { RequestMethod.GET, RequestMethod.POST })
+	public @ResponseBody NetResult buyUmbrella(Locale locale, Model model, String devUuid, String umId, String admin,
+			HttpSession session
+	) {
+	//	System.out.println("devUuid"+devUuid+"umId"+umId+"operate"+operate);
+		NetResult r = new NetResult();		
+		Map<String, Socket> sockets = SocketStart.getSocketClients();// 获取当前Socket列表
+		Socket socket = sockets.get(devUuid);
+		byte[] uuidByte=TcpServerFoward.stringToByte(devUuid);
+		
+		UserDao userDao = new UserDaoImpl();	
+		User user = userDao.findByName(admin); // 寻找当前开伞用户	
+		if(!user.isUserAuth()){ //用户权限校验
+			r.setStatus(0);
+			r.setContent("该用户未授权");	
+			return r;
+		}	
+		byte[] umOperate=new byte[22];
+		umOperate [0]=0x01;
+		umOperate [1]=0x01;
+		umOperate [2]=0x03;
+		for(int i=0;i<uuidByte.length;i++){
+			umOperate [i+3]=uuidByte[i];	
+		}
+		umOperate [19]=0x16;
+		umOperate [20]=(byte) Integer.parseInt(umId); 		
+				
+			umOperate [21]=0x00;  //买伞暂时协议走借伞协议			
 	
+		UmbrellaDao dao = new UmbrellaDaoImpl();
+		Umbrella umBefore = dao.findDeviceByUuid(devUuid);
+		byte[] staBefore=umBefore.getUmbrellaSta();
+		try{
+			send(socket, umOperate);
+		}catch(Exception e){
+			r.setStatus(0);
+			r.setContent("该伞架未在线");
+		//	System.out.println("伞架未在线");
+			return r;
+		}				
+		try {		
+				Thread.sleep(20000);		
+	
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//
+		Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
+		byte[] staAfter=umAfter.getUmbrellaSta();
+		int umIndex = 0;
+		int umIdDeal=Integer.parseInt(umId);
+		if(Integer.parseInt(umId) < 9){
+			umIdDeal-=1;
+			umIndex=0;
+		}else if(8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12){
+			umIdDeal-=9;
+			umIndex=1;
+		}			
+
+
+			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
+				
+								
+				r.setStatus(1);
+				r.setContent("买伞成功");				
+				user.setBorrowSta(true);				
+			}else{
+				r.setStatus(0);
+				r.setContent("买伞失败");											
+			}
+			
+		return r;
+	}
 	
 	@RequestMapping(value = "/umbrella-list", method = { RequestMethod.GET, RequestMethod.POST })
 	public String umbrellaList(Locale locale, Model model, String id, HttpServletRequest request) {
@@ -392,11 +479,7 @@ public class UmbrellaOperController {
 		outPutStream.write(operate);
 			//outPutStream.close();
 			//out.close();
-			//clientSocket.close();
-	
-			
-		
-		
+			//clientSocket.close();		
 	}
 	public static void main(String[] args) {
 		UmbrellaDao dao = new UmbrellaDaoImpl();

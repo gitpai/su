@@ -133,18 +133,24 @@ public class UserDaoImpl implements UserDao {
 	public String getUserRegCode(String phoneNum) {
 		// TODO Auto-generated method stub
 		 Session session=MySessionFactory.getInstance().openSession();
-		 String hql="from UserVerifyCode where user_name=:phoneNum";	
-		 Query query=  session.createQuery(hql);
-		 query.setString("phoneNum", phoneNum);
-		 List<UserVerifyCode> users=  query.list();
-		 UserVerifyCode userVerifyCode=	users.get(0);		
-		 return userVerifyCode.getVerfyCode();
+		 try{		 
+			 String hql="from UserVerifyCode where user_name=:phoneNum";	
+			 Query query=  session.createQuery(hql);
+			 query.setString("phoneNum", phoneNum);
+			 List<UserVerifyCode> users=  query.list();
+			 UserVerifyCode userVerifyCode=	users.get(0);		
+			 return userVerifyCode.getVerfyCode(); 
+		 }finally{
+			 session.close();
+		 }
+		 
 	}
 	
 	@Override
 	public UserLoginSta getUserLoginSta(String userName) {
 		// TODO Auto-generated method stub
-			Session session =MySessionFactory.getInstance().openSession();
+			Session session =MySessionFactory.getInstance().openSession();			
+			try{				
 			String hql="from User where user_name=:userName";
 			Query query=	session.createQuery(hql);
 			query.setString("userName", userName);
@@ -154,6 +160,9 @@ public class UserDaoImpl implements UserDao {
 		    userLoginSta.setNickName(users.get(0).getNickName());
 		    userLoginSta.setUserSex(users.get(0).isUserSex());		
 			return userLoginSta;
+			}finally{
+				session.close();
+			}
 	}
 
 	

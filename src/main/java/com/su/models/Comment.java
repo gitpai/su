@@ -12,13 +12,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name="comment")
 public class Comment {
-	@Id
+	
 	@Column(name="uuid_moment")
 	private String uuid;
 	
 	@Column(name="comment_moment")
 	private String comment;
-	
+	@Id
 	@Column(name="comment_time")
 	private Date commentTime;
 	

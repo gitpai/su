@@ -355,7 +355,6 @@ $(document).on("click",".layout-side-arrow",function(){
 		$(".layout-footer").removeClass("full-page");
 		$(this).removeClass("close");
 		$(".layout-side-arrow-icon").removeClass("close");
-		alert("sssss");
 	}else{
 		$(".layout-side").addClass("close");
 		$(".layout-main").addClass("full-page");
