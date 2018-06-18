@@ -34,7 +34,7 @@ import com.su.socket.SocketStart;
 import com.su.socket.TcpServerFoward;
 import com.su.util.BitUtils;
 import com.su.util.Md5_1;
-import com.su.util.SmsServer;
+import com.su.util.SmsDemo;
 
 /**
  * @author Yujie
@@ -95,7 +95,7 @@ public class UserAjax {
 			userVerifyCode.setUserName(userName);
 			userVerifyCode.setVerfyCode(smsCode);
 			dao.addUserRegCode(userVerifyCode);
-			SmsServer.sendSmsCode(userName, smsCode);
+			SmsDemo.sendMessage(userName, smsCode);
 			r.setStatus(1);
 			r.setContent("下发验证码成功");
 			

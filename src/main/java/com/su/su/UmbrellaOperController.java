@@ -1,5 +1,6 @@
 package com.su.su;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,6 +15,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -273,10 +279,13 @@ public class UmbrellaOperController {
 		//	System.out.println("伞架未在线");
 			return r;
 		}				
-		try {
+	/*	try {
 			if(operate.equals("borrow")){			
 				Thread.sleep(20000);		
 			}else if(operate.equals("reback")){
+				
+				
+				
 				Thread.sleep(20000);
 			}	
 		
@@ -285,31 +294,31 @@ public class UmbrellaOperController {
 			e.printStackTrace();
 		}
 		//
-	
-		Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
-		byte[] staAfter=umAfter.getUmbrellaSta();
-		int umIndex = 0;
-		int umIdDeal=Integer.parseInt(umId);
-		if(Integer.parseInt(umId) < 9){
-			umIdDeal-=1;
-			umIndex=0;
-		}
-	
-		else if(8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12){
-			umIdDeal-=9;
-			umIndex=1;
-		}			
-		System.out.println("umIndex"+umIndex);
-		
-		
+*/	
+			
+
+		int count =0;
+		while(count<5){	
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			count++;
 		if (operate.equals("borrow")){
-		/*	if(user.isBorrowSta()){
-				UserBarHisDao ubhd =new UserBarHisDaoImpl();
-				UserBarHistory us=	ubhd.findLatestHis(admin);			
-				r.setStatus(0);
-				r.setContent("该用户在"+us.getBorrowTime()+"时间已借伞尚未归还");	
-				return r;
-			}*/
+			
+			Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
+			byte[] staAfter=umAfter.getUmbrellaSta();
+			int umIndex = 0;
+			int umIdDeal=Integer.parseInt(umId);
+			if(Integer.parseInt(umId) < 9){
+				umIdDeal-=1;
+				umIndex=0;
+			}else if(8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12){
+				umIdDeal-=9;
+				umIndex=1;
+			}	
 			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
 				UserBarHisDao ubhd =new UserBarHisDaoImpl();	//创建借伞历史信息方法			
 				UserBarHistory us=	new UserBarHistory();   //创建历史信息对象
@@ -318,13 +327,23 @@ public class UmbrellaOperController {
 				ubhd.addBarHis(us);						
 				r.setStatus(1);
 				r.setContent("借伞成功");				
-				user.setBorrowSta(true);				
-			}else{
-				r.setStatus(0);
-				r.setContent("借伞失败");											
+				user.setBorrowSta(true);
+				userDao.addUser(user);
+				return r;
 			}
 			
 		}else if(operate.equals("reback")){
+			Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
+			byte[] staAfter=umAfter.getUmbrellaSta();
+			int umIndex = 0;
+			int umIdDeal=Integer.parseInt(umId);
+			if(Integer.parseInt(umId) < 9){
+				umIdDeal-=1;
+				umIndex=0;
+			}else if(8 < Integer.parseInt(umId) && Integer.parseInt(umId) < 12){
+				umIdDeal-=9;
+				umIndex=1;
+			}	
 			if (BitUtils.getBitValue(staBefore[umIndex], umIdDeal) != BitUtils.getBitValue(staAfter[umIndex],umIdDeal)){
 				UserBarHisDao ubhd =new UserBarHisDaoImpl();
 				UserBarHistory us=	ubhd.findLatestHis(admin);
@@ -332,13 +351,15 @@ public class UmbrellaOperController {
 				ubhd.addBarHis(us);	
 				r.setStatus(1);
 				r.setContent("还伞成功");				
-				user.setBorrowSta(false);				
-			}else{
-				r.setStatus(0);
-				r.setContent("还伞失败");	
+				user.setBorrowSta(false);	
+				userDao.addUser(user);
+				return r;
 			}
 			
-		}			
+		}	
+	}
+		r.setStatus(0);
+		r.setContent("操作失败");	
 		userDao.addUser(user);
 		return r;
 	}
@@ -393,14 +414,24 @@ public class UmbrellaOperController {
 		//	System.out.println("伞架未在线");
 			return r;
 		}				
-		try {		
+	/*	try {		
 				Thread.sleep(20000);		
 	
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		//
+		int count =0;
+		while(count<5){	
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			count++;
+		
 		Umbrella umAfter = dao.findDeviceByUuid(devUuid); 
 		byte[] staAfter=umAfter.getUmbrellaSta();
 		int umIndex = 0;
@@ -419,12 +450,12 @@ public class UmbrellaOperController {
 								
 				r.setStatus(1);
 				r.setContent("买伞成功");				
-				user.setBorrowSta(true);				
-			}else{
-				r.setStatus(0);
-				r.setContent("买伞失败");											
+				user.setBorrowSta(true);
+				return r;
+				}
 			}
-			
+		r.setStatus(0);
+		r.setContent("买伞失败");	
 		return r;
 	}
 	
@@ -496,4 +527,20 @@ public class UmbrellaOperController {
 			um.setDevice_lon(121.40669);
 			dao.addDevice(um);
 	}
+	
+	
+	@RequestMapping(value = "/downloadApps", method = RequestMethod.GET) 
+    public ResponseEntity<byte[]> download(HttpServletRequest request) throws IOException {    
+        String ctxPath = request.getSession().getServletContext().getRealPath("");
+        //获取下载文件露肩
+        String downLoadPath = ctxPath+"/resources/apps.apk";
+        //System.out.println("----"+downLoadPath);
+        File file=new File(downLoadPath);  
+        HttpHeaders headers = new HttpHeaders();  
+        String fileName=file.getName();//为了解决中文名称乱码问题  
+        headers.setContentDispositionFormData("attachment", fileName);   
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);   
+        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),    
+                                          headers, HttpStatus.CREATED);    
+    }  
 }

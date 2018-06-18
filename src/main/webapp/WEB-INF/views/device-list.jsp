@@ -20,41 +20,10 @@
 <link rel="stylesheet" type="text/css" href="resources/lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="resources/static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="resources/static/h-ui.admin/css/style.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
+
 
 <script type="text/javascript" >
-/* $(document).ready(function() {
-	alert("点击了");
-	jQuery(document).on('click', ".updateState", function() {
-		
-		var cur=$(this);
-		cur.prev().text("获取中");
-		var data={
-				uuid:cur.attr("data-uuid")
-		}
-		jQuery.ajax({
-			type: 'POST',
-			 url: "getDeviceState",
-			 data:data,
-			 dataType: 'json',
-			 success: function(json) { 
-				if(json.status==0){
-					if(json.redirectUrl=="在线")cur.prev().html("<b style='color:#0b4'>在线</b>");
-					else cur.prev().text(json.redirectUrl);
-					}
-				} 
-			});
 
-
-	 });
-	setInterval(function(){
-		 $(".updateState").click();
-	},1000 * 5);
-	
-}); */
 </script>
 <title>管理员列表</title>
 </head>

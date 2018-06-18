@@ -6,6 +6,7 @@ import com.su.util.Md5_1;
 public class Test {
 	public static void main(String[] args) {
 	
+			
 		//byte a=(byte) Integer.parseInt("2");
 		byte a=(byte) 0xfe;
 		

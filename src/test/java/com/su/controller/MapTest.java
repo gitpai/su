@@ -6,6 +6,7 @@ import javax.script.ScriptException;
 
 public class MapTest {
 public static void main(String[] args) {
+	
 	 ScriptEngineManager manager = new ScriptEngineManager();
 	  ScriptEngine engine = manager.getEngineByName("javascript");
 	     try{    
@@ -14,9 +15,8 @@ public static void main(String[] args) {
 
 	         // engine.eval("alert(\"js alert\");");    // 不能调用浏览器中定义的js函数 // 错误，会抛出alert引用不存在的异常
 	 }catch(ScriptException e){
-
-	 e.printStackTrace();
-	 }
+		 	e.printStackTrace();
+	 	}
 	 }   
 }
 	 
